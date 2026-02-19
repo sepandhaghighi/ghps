@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-"""ghps functions."""
+"""ghps server."""
 
-import argparse
 import http.server
 import socketserver
-import sys
 from pathlib import Path
 from urllib.parse import unquote
 
