@@ -70,6 +70,6 @@ setup(
     license='MIT',
     entry_points={
         'console_scripts': [
-            'ghps = ghps.functions:main',
+            'ghps = ghps.cli:main',
         ]}
 )
