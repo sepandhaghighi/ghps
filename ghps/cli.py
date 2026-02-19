@@ -4,6 +4,7 @@
 import sys
 import argparse
 from pathlib import Path
+from .server import GHPageServer
 
 def _parse_args() -> argparse.Namespace:
     """Parse arguments."""
