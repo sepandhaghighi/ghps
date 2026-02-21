@@ -53,7 +53,8 @@ def _parse_args() -> argparse.Namespace:
     return args
 
 
-def main():
+def main() -> None:
+    """CLI main function."""
     args = _parse_args()
     directory = Path(args.directory).resolve()
 
