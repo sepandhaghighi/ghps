@@ -4,12 +4,19 @@
 import sys
 import argparse
 from pathlib import Path
+from .params import GHPS_VERSION
 from .server import GHPageServer
 
 def _parse_args() -> argparse.Namespace:
     """Parse arguments."""
     parser = argparse.ArgumentParser(
         description="Minimal GitHub Pages simulator server"
+    )
+
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Version"
     )
 
     parser.add_argument(
@@ -56,18 +63,22 @@ def _parse_args() -> argparse.Namespace:
 def main() -> None:
     """CLI main function."""
     args = _parse_args()
-    directory = Path(args.directory).resolve()
 
-    if not directory.exists():
-        print("Error: Directory does not exist.")
-        sys.exit(1)
+    if args.version:
+        print(GHPS_VERSION)
+    else:
+        directory = Path(args.directory).resolve()
 
-    server = GHPageServer(
-        directory=str(directory),
-        port=args.port,
-        base_path=args.base_path,
-        strict=not args.no_strict,
-        no_cache=args.no_cache,
-        threaded=not args.no_threaded,
-    )
-    server.start()
+        if not directory.exists():
+            print("Error: Directory does not exist.")
+            sys.exit(1)
+
+        server = GHPageServer(
+            directory=str(directory),
+            port=args.port,
+            base_path=args.base_path,
+            strict=not args.no_strict,
+            no_cache=args.no_cache,
+            threaded=not args.no_threaded,
+        )
+        server.start()
