@@ -64,7 +64,6 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         return str(full_path)
 
-
     def send_error(self, code: int, message: Optional[str] = None, explain: Optional[str] = None):
         """
         Send an HTTP error response.
@@ -87,7 +86,6 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
                 return
         super().send_error(code, message, explain)
 
-
     def end_headers(self) -> None:
         """
         Finalize HTTP headers before sending the response.
@@ -103,7 +101,7 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 class _ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     """Threaded TCP server that handles each request in a separate thread."""
-    
+
     allow_reuse_address = True
 
 
@@ -172,4 +170,3 @@ class GHPageServer:
             self._httpd.shutdown()
             self._httpd.server_close()
             print("Server stopped.")
-

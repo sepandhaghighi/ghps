@@ -7,6 +7,7 @@ from pathlib import Path
 from .params import GHPS_VERSION
 from .server import GHPageServer
 
+
 def _parse_args() -> argparse.Namespace:
     """Parse arguments."""
     parser = argparse.ArgumentParser(
