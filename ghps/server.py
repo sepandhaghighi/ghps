@@ -3,26 +3,51 @@
 
 import http.server
 import socketserver
+from typing import Optional
 from pathlib import Path
 from urllib.parse import unquote
 
 
 class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
+    """
+    Custom HTTP request handler for serving static files with optional
+    base path stripping, strict routing, custom 404 page support,
+    and cache control headers.
+    """
+
     def __init__(
         self,
-        *args,
-        directory=None,
-        base_path="",
-        strict=True,
-        no_cache=False,
-        **kwargs,
+        *args: list,
+        directory: Optional[str] = None,
+        base_path: str = "",
+        strict: bool = True,
+        no_cache: bool = False,
+        **kwargs: dict,
     ):
+        """
+        Initialize the request handler.
+
+        :param args: Arguments.
+        :param directory: Root directory to serve files from.
+        :param base_path: URL base path prefix to strip from incoming requests.
+        :param strict: If False, allows resolving paths without extension to ".html".
+        :param no_cache: If True, disables client-side caching via headers.
+        :param kwargs: Keyword arguments.
+        """
         self.base_path = base_path.rstrip("/")
         self.strict = strict
         self.no_cache = no_cache
         super().__init__(*args, directory=directory, **kwargs)
 
-    def translate_path(self, path):
+    def translate_path(self, path: str) -> str:
+        """
+        Translate a URL path into a filesystem path within the configured directory.
+
+        Handles base path stripping, optional ".html" resolution in non-strict mode,
+        and automatic "index.html" resolution for directories.
+
+        :param path: Incoming HTTP request path.
+        """
         path = path.split("?", 1)[0]
         path = unquote(path)
 
@@ -44,7 +69,17 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
         return str(full_path)
 
 
-    def send_error(self, code, message=None, explain=None):
+    def send_error(self, code: int, message: Optional[str] = None, explain: Optional[str] = None):
+        """
+        Send an HTTP error response.
+
+        If a 404 error occurs and a "404.html" file exists in the root directory,
+        it will be served instead of the default error response.
+
+        :param code: HTTP status code.
+        :param message: Optional short error message.
+        :param explain: Optional detailed explanation.
+        """
         if code == 404:
             not_found = Path(self.directory) / "404.html"
             if not_found.exists():
@@ -57,7 +92,12 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
         super().send_error(code, message, explain)
 
 
-    def end_headers(self):
+    def end_headers(self) -> None:
+        """
+        Finalize HTTP headers before sending the response.
+
+        Adds no-cache headers if caching is disabled.
+        """
         if self.no_cache:
             self.send_header("Cache-Control", "no-store, no-cache, must-revalidate")
             self.send_header("Pragma", "no-cache")
@@ -66,20 +106,32 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 
 class _ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+    """Threaded TCP server that handles each request in a separate thread."""
     allow_reuse_address = True
 
 
 class GHPageServer:
+    """Lightweight static page server with optional threading, strict routing, base path support, and cache control."""
 
     def __init__(
         self,
-        directory=".",
-        port=4000,
-        base_path="",
-        strict=True,
-        no_cache=False,
-        threaded=True,
+        directory: str = ".",
+        port: int = 4000,
+        base_path: str = "",
+        strict: bool = True,
+        no_cache: bool = False,
+        threaded: bool = True,
     ):
+        """
+        Initialize the server.
+
+        :param directory: Root directory to serve files from.
+        :param port: Port number to bind the server to.
+        :param base_path: URL base path prefix for serving content.
+        :param strict: If False, enables automatic ".html" resolution.
+        :param no_cache: If True, disables client-side caching.
+        :param threaded: If True, handles requests using threads.
+        """
         self.directory = str(Path(directory).resolve())
         self.port = port
         self.base_path = base_path
@@ -88,7 +140,12 @@ class GHPageServer:
         self.threaded = threaded
         self._httpd = None
 
-    def start(self):
+    def start(self) -> None:
+        """
+        Start the HTTP server and serve requests indefinitely.
+
+        Prints server configuration details and blocks until interrupted.
+        """
         handler = lambda *args, **kwargs: _GHRequestHandler(
             *args,
             directory=self.directory,
@@ -113,6 +170,7 @@ class GHPageServer:
             self.stop()
 
     def stop(self):
+        """Stop the running HTTP server and release resources."""
         if self._httpd:
             self._httpd.shutdown()
             self._httpd.server_close()
