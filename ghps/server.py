@@ -9,11 +9,7 @@ from urllib.parse import unquote
 
 
 class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
-    """
-    Custom HTTP request handler for serving static files with optional
-    base path stripping, strict routing, custom 404 page support,
-    and cache control headers.
-    """
+    """Custom HTTP request handler for serving static files with optional base path stripping, strict routing, custom 404 page support, and cache control headers."""
 
     def __init__(
         self,
@@ -107,6 +103,7 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 class _ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     """Threaded TCP server that handles each request in a separate thread."""
+    
     allow_reuse_address = True
 
 
