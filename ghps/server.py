@@ -111,7 +111,7 @@ class GHPageServer:
     def __init__(
         self,
         directory: str = ".",
-        port: int = 4000,
+        port: int = 8000,
         base_path: str = "",
         strict: bool = True,
         no_cache: bool = False,
@@ -164,7 +164,7 @@ class GHPageServer:
         except KeyboardInterrupt:
             self.stop()
 
-    def stop(self):
+    def stop(self) -> None:
         """Stop the running HTTP server and release resources."""
         if self._httpd:
             self._httpd.shutdown()
