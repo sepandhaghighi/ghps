@@ -52,7 +52,7 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         path = path or "/"
 
-        full_path = Path(self._directory) / path.lstrip("/")
+        full_path = Path(self.directory) / path.lstrip("/")
 
         if full_path.is_dir():
             full_path = full_path / "index.html"
@@ -76,7 +76,7 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
         :param explain: Optional detailed explanation.
         """
         if code == 404:
-            not_found = Path(self._directory) / "404.html"
+            not_found = Path(self.directory) / "404.html"
             if not_found.exists():
                 self.send_response(404)
                 self.send_header("Content-Type", "text/html")
