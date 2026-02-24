@@ -24,14 +24,16 @@ def read_description() -> str:
             description += c.read()
         return description
     except Exception:
-        return '''TODO'''
+        return '''Ghps is a minimal, zero-dependency GitHub Pages simulator written in pure Python for local development and testing.
+        It accurately replicates GitHub Pages' static hosting behavior, including proper 404.html handling, project base path simulation,
+        strict routing mode, and optional cache control - all while remaining lightweight, fast, and usable both as a CLI tool and as an importable Python library.'''
 
 
 setup(
     name='ghps',
     packages=['ghps'],
     version='0.1',
-    description='TODO',
+    description='Ghps: A Minimal GitHub Pages Simulator for Local Development',
     long_description=read_description(),
     long_description_content_type='text/markdown',
     include_package_data=True,
@@ -39,7 +41,7 @@ setup(
     author_email='me@sepand.tech',
     url='https://github.com/sepandhaghighi/ghps',
     download_url='https://github.com/sepandhaghighi/ghps/tarball/v0.1',
-    keywords="text rewrite paraphrase editing llm ai text-processing cli",
+    keywords="github gh-pages static-server static-hosting development server local http simulator testing cli python",
     project_urls={
         'Source': 'https://github.com/sepandhaghighi/ghps'
     },
@@ -50,6 +52,7 @@ setup(
         'Natural Language :: English',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
+        'Environment :: Console',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
@@ -60,12 +63,10 @@ setup(
         'Programming Language :: Python :: 3.14',
         'Intended Audience :: Developers',
         'Intended Audience :: Education',
-        'Intended Audience :: End Users/Desktop',
-        'Intended Audience :: Other Audience',
         'Topic :: Utilities',
-        "Topic :: Text Processing :: Linguistic",
-        "Topic :: Text Processing :: General",
-        "Topic :: Scientific/Engineering :: Artificial Intelligence",
+        'Topic :: Internet :: WWW/HTTP :: HTTP Servers',
+        'Topic :: Software Development :: Testing',
+        'Topic :: Software Development :: Build Tools',
     ],
     license='MIT',
     entry_points={

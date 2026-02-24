@@ -1,6 +1,6 @@
 <div align="center">
 <img src="https://github.com/sepandhaghighi/ghps/raw/main/otherfiles/logo.png" width="350">
-<h1>Ghps: TODO</h1>
+<h1>Ghps: A Minimal GitHub Pages Simulator for Local Development</h1>
 <br/>
 <a href="https://www.python.org/"><img src="https://img.shields.io/badge/built%20with-Python3-green.svg" alt="built with Python3"></a>
 <a href="https://github.com/sepandhaghighi/ghps"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/sepandhaghighi/ghps"></a>
@@ -10,7 +10,7 @@
 ## Overview	
 
 <p align="justify">		
-TODO
+<b>Ghps</b> is a minimal, zero-dependency GitHub Pages simulator written in pure Python for local development and testing. It accurately replicates GitHub Pages' static hosting behavior, including proper <code>404.html</code> handling, project base path simulation, strict routing mode, and optional cache control - all while remaining lightweight, fast, and usable both as a CLI tool and as an importable Python library.
 </p>
 
 <table>
@@ -53,7 +53,53 @@ TODO
 
 ## Usage
 
-TODO
+Ghps can be used both as a CLI tool and as a Python library.
+
+### CLI
+
+```bash
+ghps --port=8080 --no-cache --no-threaded
+```
+
+#### Options
+
+| Option | Description | Default |
+|--------|-------------|----------|
+| `-p, --port` | Port to serve on | `8000` |
+| `-d, --directory` | Directory to serve | Current directory (`.`) |
+| `-b, --base-path` | Base path for project pages (e.g. `/repo-name`) | `""` |
+| `--no-strict` | Enable `.html` fallback| Strict mode enabled |
+| `--no-cache` | Disable HTTP caching headers | Cache enabled |
+| `--no-threaded` | Disable threaded server | Threaded enabled |
+
+
+### Library
+
+```python
+from ghps import GHPageServer
+
+server = GHPageServer(
+    directory="dist",
+    port=5000,
+    base_path="/repo-name",
+    strict=True,
+    no_cache=False,
+    threaded=True,
+)
+
+server.start()
+```
+
+#### Parameters
+
+| Parameter | Type | Description | Default |
+|------------|------|-------------|----------|
+| `directory` | `str` | Directory to serve | `"."` |
+| `port` | `int` | Port number | `8000` |
+| `base_path` | `str` | Base path for project page simulation | `""` |
+| `strict` | `bool` | Enforce GitHub-like routing behavior | `True` |
+| `no_cache` | `bool` | Disable cache headers | `False` |
+| `threaded` | `bool` | Enable threaded request handling | `True` |
 
 ## Issues & Bug Reports			
 

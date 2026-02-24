@@ -23,8 +23,8 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "-p", "--port",
         type=int,
-        default=4000,
-        help="Port to serve on (default: 4000)"
+        default=8000,
+        help="Port to serve on (default: 8000)"
     )
 
     parser.add_argument(
@@ -42,7 +42,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--no-strict",
         action="store_true",
-        help="Enable .html fallback (non-GitHub behavior)"
+        help="Enable .html fallback"
     )
 
     parser.add_argument(
