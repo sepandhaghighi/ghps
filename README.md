@@ -58,7 +58,7 @@ Ghps can be used both as a CLI tool and as a Python library.
 ### CLI
 
 ```bash
-ghps -port=8080
+ghps --port=8080 --no-cache --no-threaded
 ```
 
 #### Options
