@@ -30,9 +30,9 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
         :param no_cache: If True, disables client-side caching via headers.
         :param kwargs: Keyword arguments.
         """
-        self.base_path = base_path.rstrip("/")
-        self.strict = strict
-        self.no_cache = no_cache
+        self._base_path = base_path.rstrip("/")
+        self._strict = strict
+        self._no_cache = no_cache
         super().__init__(*args, directory=directory, **kwargs)
 
     def translate_path(self, path: str) -> str:
@@ -47,8 +47,8 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
         path = path.split("?", 1)[0]
         path = unquote(path)
 
-        if self.base_path and path.startswith(self.base_path):
-            path = path[len(self.base_path):]
+        if self._base_path and path.startswith(self._base_path):
+            path = path[len(self._base_path):]
 
         path = path or "/"
 
@@ -57,7 +57,7 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
         if full_path.is_dir():
             full_path = full_path / "index.html"
 
-        if not self.strict and not full_path.exists() and full_path.suffix == "":
+        if not self._strict and not full_path.exists() and full_path.suffix == "":
             candidate = full_path.with_suffix(".html")
             if candidate.exists():
                 full_path = candidate
@@ -92,7 +92,7 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         Adds no-cache headers if caching is disabled.
         """
-        if self.no_cache:
+        if self._no_cache:
             self.send_header("Cache-Control", "no-store, no-cache, must-revalidate")
             self.send_header("Pragma", "no-cache")
             self.send_header("Expires", "0")
@@ -129,9 +129,9 @@ class GHPageServer:
         """
         self.directory = str(Path(directory).resolve())
         self.port = port
-        self.base_path = base_path
-        self.strict = strict
-        self.no_cache = no_cache
+        self._base_path = base_path
+        self._strict = strict
+        self._no_cache = no_cache
         self.threaded = threaded
         self._httpd = None
 
@@ -144,9 +144,9 @@ class GHPageServer:
         handler = lambda *args, **kwargs: _GHRequestHandler(
             *args,
             directory=self.directory,
-            base_path=self.base_path,
-            strict=self.strict,
-            no_cache=self.no_cache,
+            base_path=self._base_path,
+            strict=self._strict,
+            no_cache=self._no_cache,
             **kwargs,
         )
 
@@ -154,10 +154,10 @@ class GHPageServer:
 
         self._httpd = server_cls(("", self.port), handler)
 
-        print(f"Serving at http://localhost:{self.port}{self.base_path}")
+        print(f"Serving at http://localhost:{self.port}{self._base_path}")
         print(f"Directory: {self.directory}")
-        print(f"Strict mode: {'ON' if self.strict else 'OFF'}")
-        print(f"Cache disabled: {'YES' if self.no_cache else 'NO'}")
+        print(f"Strict mode: {'ON' if self._strict else 'OFF'}")
+        print(f"Cache disabled: {'YES' if self._no_cache else 'NO'}")
 
         try:
             self._httpd.serve_forever()
