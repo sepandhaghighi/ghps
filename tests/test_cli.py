@@ -16,7 +16,7 @@ def run_cli(monkeypatch, args):
 
 def test_cli_default_arguments(monkeypatch):
     mock_server = MagicMock()
-    monkeypatch.setattr(ghps, "GHPageServer", MagicMock(return_value=mock_server))
+    monkeypatch.setattr(ghps, "ghps.cli.GHPageServer", MagicMock(return_value=mock_server))
 
     run_cli(monkeypatch, [])
 
@@ -34,7 +34,7 @@ def test_cli_default_arguments(monkeypatch):
 
 def test_cli_custom_port_and_directory(monkeypatch, tmp_path):
     mock_server = MagicMock()
-    monkeypatch.setattr(ghps, "GHPageServer", MagicMock(return_value=mock_server))
+    monkeypatch.setattr(ghps, "ghps.cli.GHPageServer", MagicMock(return_value=mock_server))
 
     run_cli(monkeypatch, ["-p", "9090", "-d", str(tmp_path)])
 
@@ -50,7 +50,7 @@ def test_cli_custom_port_and_directory(monkeypatch, tmp_path):
 
 def test_cli_base_path(monkeypatch):
     mock_server = MagicMock()
-    monkeypatch.setattr(ghps, "GHPageServer", MagicMock(return_value=mock_server))
+    monkeypatch.setattr(ghps, "ghps.cli.GHPageServer", MagicMock(return_value=mock_server))
 
     run_cli(monkeypatch, ["-b", "/repo"])
 
@@ -61,7 +61,7 @@ def test_cli_base_path(monkeypatch):
 
 def test_cli_no_strict(monkeypatch):
     mock_server = MagicMock()
-    monkeypatch.setattr(ghps, "GHPageServer", MagicMock(return_value=mock_server))
+    monkeypatch.setattr(ghps, "ghps.cli.GHPageServer", MagicMock(return_value=mock_server))
 
     run_cli(monkeypatch, ["--no-strict"])
 
@@ -72,7 +72,7 @@ def test_cli_no_strict(monkeypatch):
 
 def test_cli_no_cache(monkeypatch):
     mock_server = MagicMock()
-    monkeypatch.setattr(ghps, "GHPageServer", MagicMock(return_value=mock_server))
+    monkeypatch.setattr(ghps, "ghps.cli.GHPageServer", MagicMock(return_value=mock_server))
 
     run_cli(monkeypatch, ["--no-cache"])
 
@@ -82,7 +82,7 @@ def test_cli_no_cache(monkeypatch):
 
 def test_cli_no_threaded(monkeypatch):
     mock_server = MagicMock()
-    monkeypatch.setattr(ghps, "GHPageServer", MagicMock(return_value=mock_server))
+    monkeypatch.setattr(ghps, "ghps.cli.GHPageServer", MagicMock(return_value=mock_server))
 
     run_cli(monkeypatch, ["--no-threaded"])
 
