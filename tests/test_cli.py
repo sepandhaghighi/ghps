@@ -4,13 +4,13 @@ from unittest.mock import MagicMock
 
 import pytest
 
-import ghps
+import ghps.cli
 
 
 
 def run_cli(monkeypatch, args):
     monkeypatch.setattr(sys, "argv", ["ghps"] + args)
-    ghps.main()
+    ghps.cli.main()
 
 
 
@@ -94,4 +94,4 @@ def test_cli_invalid_directory(monkeypatch):
     monkeypatch.setattr(sys, "argv", ["ghps", "-d", "non_existent_dir"])
 
     with pytest.raises(SystemExit):
-        ghps.main()
+        ghps.cli.main()
