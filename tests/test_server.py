@@ -31,7 +31,6 @@ def test_serves_index_html():
         server.stop()
 
 
-
 def test_404_without_custom_page():
     with tempfile.TemporaryDirectory() as tmpdir:
         server = GHPageServer(directory=tmpdir, port=9002)
@@ -57,7 +56,6 @@ def test_custom_404_page():
         server.stop()
 
 
-
 def test_non_strict_html_fallback():
     with tempfile.TemporaryDirectory() as tmpdir:
         Path(tmpdir, "about.html").write_text("About Page")
@@ -70,7 +68,6 @@ def test_non_strict_html_fallback():
         assert "About Page" in response.text
 
         server.stop()
-
 
 
 def test_strict_mode_blocks_html_fallback():

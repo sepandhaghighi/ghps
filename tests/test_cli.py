@@ -5,12 +5,10 @@ import pytest
 import ghps.cli
 
 
-
 def run_cli(monkeypatch, args):
     monkeypatch.setattr(sys, "argv", ["ghps"] + args)
     monkeypatch.setattr(ghps.cli.GHPageServer, "start", lambda self: None)
     ghps.cli.main()
-
 
 
 def test_cli_default_arguments(monkeypatch):
@@ -55,7 +53,6 @@ def test_cli_custom_port_and_directory(monkeypatch, tmp_path):
 
     assert captured["port"] == 9090
     assert captured["directory"] == str(tmp_path.resolve())
-
 
 
 def test_cli_base_path(monkeypatch):
