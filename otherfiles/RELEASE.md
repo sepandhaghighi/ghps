@@ -1,6 +1,6 @@
 # Ghps Release Instructions
 
-**Last Update: 2026-02-19**
+**Last Update: 2026-02-27**
 
 1. Create the `release` branch under `dev`
 2. Update all version tags
@@ -21,7 +21,7 @@
 	3. Labels: `release`
 	4. Set milestone
 	5. Wait for all CI pass
-	6. Need review (**1** reviewer)
+	6. Need review
 	7. Squash and merge
 	8. Delete `release` branch
 6. Merge `dev` branch into `main`
