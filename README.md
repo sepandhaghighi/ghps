@@ -4,6 +4,7 @@
 <a href="https://www.python.org/"><img src="https://img.shields.io/badge/built%20with-Python3-green.svg" alt="built with Python3"></a>
 <a href="https://github.com/sepandhaghighi/ghps"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/sepandhaghighi/ghps"></a>
 <a href="https://badge.fury.io/py/ghps"><img src="https://badge.fury.io/py/ghps.svg" alt="PyPI version"></a>
+<a href="https://codecov.io/gh/sepandhaghighi/ghps"><img src="https://codecov.io/gh/sepandhaghighi/ghps/graph/badge.svg?token=X9Yj0YSPAK"></a>
 </div>			
 				
 ## Overview	
