@@ -4,6 +4,7 @@
 <a href="https://www.python.org/"><img src="https://img.shields.io/badge/built%20with-Python3-green.svg" alt="built with Python3"></a>
 <a href="https://github.com/sepandhaghighi/ghps"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/sepandhaghighi/ghps"></a>
 <a href="https://badge.fury.io/py/ghps"><img src="https://badge.fury.io/py/ghps.svg" alt="PyPI version"></a>
+<a href="https://codecov.io/gh/sepandhaghighi/ghps"><img src="https://codecov.io/gh/sepandhaghighi/ghps/graph/badge.svg?token=X9Yj0YSPAK"></a>
 </div>			
 				
 ## Overview	
@@ -36,6 +37,13 @@
 		<td align="center"><img src="https://github.com/sepandhaghighi/ghps/actions/workflows/test.yml/badge.svg?branch=main"></td>
 		<td align="center"><img src="https://github.com/sepandhaghighi/ghps/actions/workflows/test.yml/badge.svg?branch=dev"></td>
 	</tr>
+</table>
+<table>
+    <tr> 
+        <td align="center">Code Quality</td>
+        <td align="center"><a href="https://www.codefactor.io/repository/github/sepandhaghighi/ghps"><img src="https://www.codefactor.io/repository/github/sepandhaghighi/ghps/badge" alt="CodeFactor"></a></td>
+        <td align="center"><a href="https://app.codacy.com/gh/sepandhaghighi/ghps/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/738213c0ed074885b32c531d1bbf003f"></a></td>
+    </tr>
 </table>
 
 ## Installation		
