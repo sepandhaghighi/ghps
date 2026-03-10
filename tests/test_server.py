@@ -3,10 +3,7 @@ import threading
 import time
 import tempfile
 from pathlib import Path
-
-import pytest
 import requests
-
 from ghps import GHPageServer
 
 
