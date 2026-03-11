@@ -187,6 +187,14 @@ class GHPageServer:
         :param no_cache: If True, disables client-side caching.
         :param threaded: If True, handles requests using threads.
         """
+        _validate_inputs(
+            directory = directory,
+            port = port,
+            base_pat = base_path,
+            strict = strict,
+            no_cache = no_cache,
+            threaded = threaded,
+        )
         self._directory = str(Path(directory).resolve())
         self._port = port
         self._base_path = base_path
