@@ -3,10 +3,7 @@ import threading
 import time
 import tempfile
 from pathlib import Path
-
-import pytest
 import requests
-
 from ghps import GHPageServer
 
 
@@ -24,7 +21,7 @@ def test_serves_index_html():
         server = GHPageServer(directory=tmpdir, port=9001)
         run_server(server)
 
-        response = requests.get("http://localhost:9001/")
+        response = requests.get("http://localhost:9001/", timeout=5)
         assert response.status_code == 200
         assert "Hello World" in response.text
 
@@ -36,7 +33,7 @@ def test_404_without_custom_page():
         server = GHPageServer(directory=tmpdir, port=9002)
         run_server(server)
 
-        response = requests.get("http://localhost:9002/missing")
+        response = requests.get("http://localhost:9002/missing", timeout=5)
         assert response.status_code == 404
 
         server.stop()
@@ -49,7 +46,7 @@ def test_custom_404_page():
         server = GHPageServer(directory=tmpdir, port=9003)
         run_server(server)
 
-        response = requests.get("http://localhost:9003/missing")
+        response = requests.get("http://localhost:9003/missing", timeout=5)
         assert response.status_code == 404
         assert "Custom Not Found" in response.text
 
@@ -63,7 +60,7 @@ def test_non_strict_html_fallback():
         server = GHPageServer(directory=tmpdir, port=9004, strict=False)
         run_server(server)
 
-        response = requests.get("http://localhost:9004/about")
+        response = requests.get("http://localhost:9004/about", timeout=5)
         assert response.status_code == 200
         assert "About Page" in response.text
 
@@ -77,7 +74,7 @@ def test_strict_mode_blocks_html_fallback():
         server = GHPageServer(directory=tmpdir, port=9005, strict=True)
         run_server(server)
 
-        response = requests.get("http://localhost:9005/about")
+        response = requests.get("http://localhost:9005/about", timeout=5)
         assert response.status_code == 404
 
         server.stop()
@@ -94,7 +91,7 @@ def test_base_path_simulation():
         )
         run_server(server)
 
-        response = requests.get("http://localhost:9006/repo/")
+        response = requests.get("http://localhost:9006/repo/", timeout=5)
         assert response.status_code == 200
         assert "Base Path OK" in response.text
 
@@ -112,7 +109,7 @@ def test_no_cache_headers():
         )
         run_server(server)
 
-        response = requests.get("http://localhost:9007/")
+        response = requests.get("http://localhost:9007/", timeout=5)
         assert response.status_code == 200
         assert response.headers.get("Cache-Control") is not None
         assert "no-store" in response.headers["Cache-Control"]
