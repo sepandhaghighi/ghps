@@ -190,7 +190,7 @@ class GHPageServer:
         _validate_inputs(
             directory = directory,
             port = port,
-            base_pat = base_path,
+            base_path = base_path,
             strict = strict,
             no_cache = no_cache,
             threaded = threaded,
