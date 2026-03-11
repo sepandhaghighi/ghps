@@ -19,6 +19,7 @@ from .params import (
     INVALID_THREADED_TYPE_ERROR,
 )
 
+
 def _validate_inputs(
     directory: Any,
     port: Any,
@@ -26,7 +27,7 @@ def _validate_inputs(
     strict: Any,
     no_cache: Any,
     threaded: Any,
-    ):
+):
     """
     Validate GHPageServer inputs.
 
@@ -67,6 +68,7 @@ def _validate_inputs(
 
     if not isinstance(threaded, bool):
         raise ValueError(INVALID_THREADED_TYPE_ERROR)
+
 
 class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
     """Custom HTTP request handler for serving static files with optional base path stripping, strict routing, custom 404 page support, and cache control headers."""
@@ -188,12 +190,12 @@ class GHPageServer:
         :param threaded: If True, handles requests using threads.
         """
         _validate_inputs(
-            directory = directory,
-            port = port,
-            base_path = base_path,
-            strict = strict,
-            no_cache = no_cache,
-            threaded = threaded,
+            directory=directory,
+            port=port,
+            base_path=base_path,
+            strict=strict,
+            no_cache=no_cache,
+            threaded=threaded,
         )
         self._directory = str(Path(directory).resolve())
         self._port = port
