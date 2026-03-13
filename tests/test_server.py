@@ -4,7 +4,7 @@ import time
 import tempfile
 from pathlib import Path
 import requests
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 import pytest
 from ghps import GHPageServer
 
@@ -120,11 +120,12 @@ def test_no_cache_headers():
 
 
 def test_keyboard_interrupt(capsys):
-    server = GHPageServer()
-    with patch.object(server, "_httpd", create=True) as mock_httpd:
-        mock_httpd.serve_forever.side_effect = KeyboardInterrupt
-        mock_httpd.shutdown.return_value = None
-        mock_httpd.server_close.return_value = None
+    mock_server = MagicMock()
+    mock_server.serve_forever.side_effect = KeyboardInterrupt
+
+    with patch("ghps.server._ThreadedTCPServer", return_value=mock_server):
+        server = GHPageServer(threaded=True)
         server.start()
-    out, _ = capsys.readouterr()
-    assert "Server stopped." in out
+
+    captured = capsys.readouterr()
+    assert "Server stopped." in captured.out
