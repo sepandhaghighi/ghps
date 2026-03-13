@@ -124,3 +124,5 @@ def test_keyboard_interrupt(capsys):
         with pytest.raises(SystemExit):
             server = GHPageServer(port=9001)
             server.start()
+        out, _ = capsys.readouterr()
+        assert "Server stopped." in out
