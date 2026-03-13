@@ -120,9 +120,11 @@ def test_no_cache_headers():
 
 
 def test_keyboard_interrupt(capsys):
-    with patch("ghps.server.GHPageServer.start", side_effect=KeyboardInterrupt):
-        with pytest.raises(SystemExit):
-            server = GHPageServer(port=9001)
-            server.start()
-        out, _ = capsys.readouterr()
-        assert "Server stopped." in out
+    server = GHPageServer()
+    with patch.object(server, "_httpd", create=True) as mock_httpd:
+        mock_httpd.serve_forever.side_effect = KeyboardInterrupt
+        mock_httpd.shutdown.return_value = None
+        mock_httpd.server_close.return_value = None
+        server.start()
+    out, _ = capsys.readouterr()
+    assert "Server stopped." in out
