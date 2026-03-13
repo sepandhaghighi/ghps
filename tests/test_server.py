@@ -4,6 +4,7 @@ import time
 import tempfile
 from pathlib import Path
 import requests
+from unittest.mock import patch
 from ghps import GHPageServer
 
 
