@@ -5,6 +5,7 @@ import tempfile
 from pathlib import Path
 import requests
 from unittest.mock import patch
+import pytest
 from ghps import GHPageServer
 
 
