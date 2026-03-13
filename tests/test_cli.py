@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+from unittest.mock import patch
 import pytest
 from ghps.params import GHPS_VERSION
 import ghps.cli
