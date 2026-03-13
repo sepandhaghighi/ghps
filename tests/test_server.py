@@ -115,3 +115,10 @@ def test_no_cache_headers():
         assert "no-store" in response.headers["Cache-Control"]
 
         server.stop()
+
+
+def test_keyboard_interrupt(capsys):
+    with patch("ghps.server.GHPageServer.start", side_effect=KeyboardInterrupt):
+        with pytest.raises(SystemExit):
+            server = GHPageServer(port=9001)
+            server.start()
