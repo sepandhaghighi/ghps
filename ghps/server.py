@@ -3,9 +3,71 @@
 
 import http.server
 import socketserver
-from typing import Optional
+from typing import Optional, Any
 from pathlib import Path
 from urllib.parse import unquote
+from .params import (
+    INVALID_DIRECTORY_TYPE_ERROR,
+    DIRECTORY_NOT_FOUND_ERROR,
+    DIRECTORY_NOT_DIR_ERROR,
+    INVALID_PORT_TYPE_ERROR,
+    INVALID_PORT_RANGE_ERROR,
+    INVALID_BASE_PATH_TYPE_ERROR,
+    INVALID_BASE_PATH_FORMAT_ERROR,
+    INVALID_STRICT_TYPE_ERROR,
+    INVALID_NO_CACHE_TYPE_ERROR,
+    INVALID_THREADED_TYPE_ERROR,
+)
+
+
+def _validate_inputs(
+    directory: Any,
+    port: Any,
+    base_path: Any,
+    strict: Any,
+    no_cache: Any,
+    threaded: Any,
+):
+    """
+    Validate GHPageServer inputs.
+
+    :param directory: Root directory to serve files from.
+    :param port: Port number to bind the server to.
+    :param base_path: URL base path prefix for serving content.
+    :param strict: If False, enables automatic ".html" resolution.
+    :param no_cache: If True, disables client-side caching.
+    :param threaded: If True, handles requests using threads.
+    """
+    if not isinstance(directory, (str, Path)):
+        raise ValueError(INVALID_DIRECTORY_TYPE_ERROR)
+
+    directory = Path(directory)
+    if not directory.exists():
+        raise ValueError(DIRECTORY_NOT_FOUND_ERROR)
+
+    if not directory.is_dir():
+        raise ValueError(DIRECTORY_NOT_DIR_ERROR)
+
+    if not isinstance(port, int):
+        raise ValueError(INVALID_PORT_TYPE_ERROR)
+
+    if not (1 <= port <= 65535):
+        raise ValueError(INVALID_PORT_RANGE_ERROR)
+
+    if not isinstance(base_path, str):
+        raise ValueError(INVALID_BASE_PATH_TYPE_ERROR)
+
+    if base_path and not base_path.startswith("/"):
+        raise ValueError(INVALID_BASE_PATH_FORMAT_ERROR)
+
+    if not isinstance(strict, bool):
+        raise ValueError(INVALID_STRICT_TYPE_ERROR)
+
+    if not isinstance(no_cache, bool):
+        raise ValueError(INVALID_NO_CACHE_TYPE_ERROR)
+
+    if not isinstance(threaded, bool):
+        raise ValueError(INVALID_THREADED_TYPE_ERROR)
 
 
 class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -127,6 +189,14 @@ class GHPageServer:
         :param no_cache: If True, disables client-side caching.
         :param threaded: If True, handles requests using threads.
         """
+        _validate_inputs(
+            directory=directory,
+            port=port,
+            base_path=base_path,
+            strict=strict,
+            no_cache=no_cache,
+            threaded=threaded,
+        )
         self._directory = str(Path(directory).resolve())
         self._port = port
         self._base_path = base_path
