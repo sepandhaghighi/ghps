@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
+from unittest.mock import patch
 import pytest
-
+from ghps.params import GHPS_VERSION
 import ghps.cli
 
 
@@ -9,6 +10,13 @@ def run_cli(monkeypatch, args):
     monkeypatch.setattr(sys, "argv", ["ghps"] + args)
     monkeypatch.setattr(ghps.cli.GHPageServer, "start", lambda self: None)
     ghps.cli.main()
+
+
+def test_version_flag(capsys):
+    with patch("sys.argv", ["ghps", "--version"]):
+        ghps.cli.main()
+    out, _ = capsys.readouterr()
+    assert out.strip() == GHPS_VERSION
 
 
 def test_cli_default_arguments(monkeypatch):
