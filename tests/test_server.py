@@ -5,7 +5,6 @@ import tempfile
 from pathlib import Path
 import requests
 from unittest.mock import patch, MagicMock
-import pytest
 from ghps import GHPageServer
 
 
