@@ -18,6 +18,7 @@ from .params import (
     INVALID_STRICT_TYPE_ERROR,
     INVALID_NO_CACHE_TYPE_ERROR,
     INVALID_THREADED_TYPE_ERROR,
+    INVALID_AUTO_OPEN_TYPE_ERROR
 )
 
 
@@ -73,7 +74,7 @@ def _validate_inputs(
         raise ValueError(INVALID_THREADED_TYPE_ERROR)
     
     if not isinstance(auto_open, bool):
-        raise ValueError("auto_open must be a boolean")
+        raise ValueError(INVALID_AUTO_OPEN_TYPE_ERROR)
 
 
 class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
