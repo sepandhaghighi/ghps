@@ -79,6 +79,7 @@ ghps --port=8080 --no-cache --no-threaded
 | `--no-strict` | Enable `.html` fallback| Strict mode enabled |
 | `--no-cache` | Disable HTTP caching headers | Cache enabled |
 | `--no-threaded` | Disable threaded server | Threaded enabled |
+| `--auto-open` | Automatically open the server URL | Disable |
 
 
 ### Library
@@ -93,6 +94,7 @@ server = GHPageServer(
     strict=True,
     no_cache=False,
     threaded=True,
+	auto_open=True,
 )
 
 server.start()
@@ -108,6 +110,7 @@ server.start()
 | `strict` | `bool` | Enforce GitHub-like routing behavior | `True` |
 | `no_cache` | `bool` | Disable cache headers | `False` |
 | `threaded` | `bool` | Enable threaded request handling | `True` |
+| `auto_open` | `bool` | Automatically open the server URL | `False` |
 
 ## Issues & Bug Reports			
 
