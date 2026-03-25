@@ -124,3 +124,16 @@ def test_invalid_threaded_type(tmp_path):
             no_cache=False,
             threaded="true",
         )
+
+
+def test_invalid_auto_open_type(tmp_path):
+    with pytest.raises(ValueError, match="`auto_open` must be bool."):
+        GHPageServer(
+            directory=tmp_path,
+            port=8000,
+            base_path="",
+            strict=True,
+            no_cache=False,
+            threaded=true,
+            auto_open="true",
+        )
