@@ -234,8 +234,8 @@ class GHPageServer:
         server_cls = _ThreadedTCPServer if self._threaded else socketserver.TCPServer
 
         self._httpd = server_cls(("", self._port), handler)
-
-        print(f"Serving at http://localhost:{self._port}{self._base_path}")
+        url = f"http://localhost:{self._port}{self._base_path}"
+        print(f"Serving at {url}")
         print(f"Directory: {self._directory}")
         print(f"Strict mode: {'ON' if self._strict else 'OFF'}")
         print(f"Cache disabled: {'YES' if self._no_cache else 'NO'}")
