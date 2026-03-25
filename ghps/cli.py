@@ -60,7 +60,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--auto-open",
         action="store_true",
-        help="Automatically open the server URL in the default web browser"
+        help="Automatically open the server URL"
     )
 
     args = parser.parse_args()

@@ -134,6 +134,6 @@ def test_invalid_auto_open_type(tmp_path):
             base_path="",
             strict=True,
             no_cache=False,
-            threaded=true,
+            threaded=True,
             auto_open="true",
         )
