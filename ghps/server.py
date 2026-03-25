@@ -39,6 +39,7 @@ def _validate_inputs(
     :param strict: If False, enables automatic ".html" resolution.
     :param no_cache: If True, disables client-side caching.
     :param threaded: If True, handles requests using threads.
+    :param auto_open: If True, automatically opens the server URL in the default web browser.
     """
     if not isinstance(directory, (str, Path)):
         raise ValueError(INVALID_DIRECTORY_TYPE_ERROR)
@@ -194,6 +195,7 @@ class GHPageServer:
         :param strict: If False, enables automatic ".html" resolution.
         :param no_cache: If True, disables client-side caching.
         :param threaded: If True, handles requests using threads.
+        :param auto_open: If True, automatically opens the server URL in the default web browser.
         """
         _validate_inputs(
             directory=directory,
