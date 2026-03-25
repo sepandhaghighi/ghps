@@ -3,6 +3,7 @@
 
 import http.server
 import socketserver
+import webbrowser
 from typing import Optional, Any
 from pathlib import Path
 from urllib.parse import unquote
@@ -27,6 +28,7 @@ def _validate_inputs(
     strict: Any,
     no_cache: Any,
     threaded: Any,
+    auto_open: Any,
 ):
     """
     Validate GHPageServer inputs.
@@ -68,6 +70,9 @@ def _validate_inputs(
 
     if not isinstance(threaded, bool):
         raise ValueError(INVALID_THREADED_TYPE_ERROR)
+    
+    if not isinstance(auto_open, bool):
+        raise ValueError("auto_open must be a boolean")
 
 
 class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -178,6 +183,7 @@ class GHPageServer:
         strict: bool = True,
         no_cache: bool = False,
         threaded: bool = True,
+        auto_open: bool = False,
     ):
         """
         Initialize the server.
@@ -196,6 +202,7 @@ class GHPageServer:
             strict=strict,
             no_cache=no_cache,
             threaded=threaded,
+            auto_open=auto_open,
         )
         self._directory = str(Path(directory).resolve())
         self._port = port
@@ -203,6 +210,7 @@ class GHPageServer:
         self._strict = strict
         self._no_cache = no_cache
         self._threaded = threaded
+        self._auto_open = auto_open
         self._httpd = None
 
     def start(self) -> None:
@@ -228,7 +236,12 @@ class GHPageServer:
         print(f"Directory: {self._directory}")
         print(f"Strict mode: {'ON' if self._strict else 'OFF'}")
         print(f"Cache disabled: {'YES' if self._no_cache else 'NO'}")
-
+        
+        if self._auto_open:
+            try:
+                webbrowser.open(url)
+            except Exception:
+                pass
         try:
             self._httpd.serve_forever()
         except KeyboardInterrupt:
