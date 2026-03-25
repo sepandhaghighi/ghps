@@ -72,7 +72,7 @@ def _validate_inputs(
 
     if not isinstance(threaded, bool):
         raise ValueError(INVALID_THREADED_TYPE_ERROR)
-    
+
     if not isinstance(auto_open, bool):
         raise ValueError(INVALID_AUTO_OPEN_TYPE_ERROR)
 
@@ -239,7 +239,7 @@ class GHPageServer:
         print(f"Directory: {self._directory}")
         print(f"Strict mode: {'ON' if self._strict else 'OFF'}")
         print(f"Cache disabled: {'YES' if self._no_cache else 'NO'}")
-        
+
         if self._auto_open:
             try:
                 webbrowser.open(url)
