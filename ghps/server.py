@@ -3,6 +3,7 @@
 
 import http.server
 import socketserver
+import webbrowser
 from typing import Optional, Any
 from pathlib import Path
 from urllib.parse import unquote
@@ -17,6 +18,7 @@ from .params import (
     INVALID_STRICT_TYPE_ERROR,
     INVALID_NO_CACHE_TYPE_ERROR,
     INVALID_THREADED_TYPE_ERROR,
+    INVALID_AUTO_OPEN_TYPE_ERROR
 )
 
 
@@ -27,6 +29,7 @@ def _validate_inputs(
     strict: Any,
     no_cache: Any,
     threaded: Any,
+    auto_open: Any,
 ):
     """
     Validate GHPageServer inputs.
@@ -37,6 +40,7 @@ def _validate_inputs(
     :param strict: If False, enables automatic ".html" resolution.
     :param no_cache: If True, disables client-side caching.
     :param threaded: If True, handles requests using threads.
+    :param auto_open: If True, automatically opens the server URL in the default web browser.
     """
     if not isinstance(directory, (str, Path)):
         raise ValueError(INVALID_DIRECTORY_TYPE_ERROR)
@@ -68,6 +72,9 @@ def _validate_inputs(
 
     if not isinstance(threaded, bool):
         raise ValueError(INVALID_THREADED_TYPE_ERROR)
+
+    if not isinstance(auto_open, bool):
+        raise ValueError(INVALID_AUTO_OPEN_TYPE_ERROR)
 
 
 class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -178,6 +185,7 @@ class GHPageServer:
         strict: bool = True,
         no_cache: bool = False,
         threaded: bool = True,
+        auto_open: bool = False,
     ):
         """
         Initialize the server.
@@ -188,6 +196,7 @@ class GHPageServer:
         :param strict: If False, enables automatic ".html" resolution.
         :param no_cache: If True, disables client-side caching.
         :param threaded: If True, handles requests using threads.
+        :param auto_open: If True, automatically opens the server URL in the default web browser.
         """
         _validate_inputs(
             directory=directory,
@@ -196,6 +205,7 @@ class GHPageServer:
             strict=strict,
             no_cache=no_cache,
             threaded=threaded,
+            auto_open=auto_open,
         )
         self._directory = str(Path(directory).resolve())
         self._port = port
@@ -203,6 +213,7 @@ class GHPageServer:
         self._strict = strict
         self._no_cache = no_cache
         self._threaded = threaded
+        self._auto_open = auto_open
         self._httpd = None
 
     def start(self) -> None:
@@ -223,12 +234,17 @@ class GHPageServer:
         server_cls = _ThreadedTCPServer if self._threaded else socketserver.TCPServer
 
         self._httpd = server_cls(("", self._port), handler)
-
-        print(f"Serving at http://localhost:{self._port}{self._base_path}")
+        url = f"http://localhost:{self._port}{self._base_path}"
+        print(f"Serving at {url}")
         print(f"Directory: {self._directory}")
         print(f"Strict mode: {'ON' if self._strict else 'OFF'}")
         print(f"Cache disabled: {'YES' if self._no_cache else 'NO'}")
 
+        if self._auto_open:
+            try:
+                webbrowser.open(url)
+            except Exception:
+                pass
         try:
             self._httpd.serve_forever()
         except KeyboardInterrupt:

@@ -57,6 +57,12 @@ def _parse_args() -> argparse.Namespace:
         help="Disable threaded server"
     )
 
+    parser.add_argument(
+        "--auto-open",
+        action="store_true",
+        help="Automatically open the server URL"
+    )
+
     args = parser.parse_args()
     return args
 
@@ -81,5 +87,6 @@ def main() -> None:
             strict=not args.no_strict,
             no_cache=args.no_cache,
             threaded=not args.no_threaded,
+            auto_open=args.auto_open,
         )
         server.start()
