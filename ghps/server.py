@@ -244,7 +244,7 @@ class GHPageServer:
             try:
                 webbrowser.open(url)
             except Exception:
-                pass
+                print("[Error] Failed to open browser automatically")
         try:
             self._httpd.serve_forever()
         except KeyboardInterrupt:
