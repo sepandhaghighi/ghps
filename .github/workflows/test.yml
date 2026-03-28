@@ -55,7 +55,7 @@ jobs:
       - name: Vulture, Bandit and Pydocstyle tests
         run: |
           python -m vulture ghps/ otherfiles/ setup.py --min-confidence 65 --exclude=__init__.py --sort-by-size
-          python -m bandit -r ghps -s B311,B105,B110
+          python -m bandit -r ghps -s B311,B105
           python -m pydocstyle -v
       - name: Version check
         run: |
