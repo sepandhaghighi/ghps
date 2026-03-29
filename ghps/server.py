@@ -55,7 +55,7 @@ def _validate_inputs(
     if not isinstance(port, int):
         raise ValueError(INVALID_PORT_TYPE_ERROR)
 
-    if not (1 <= port <= 65535):
+    if not (0 <= port <= 65535):
         raise ValueError(INVALID_PORT_RANGE_ERROR)
 
     if not isinstance(base_path, str):
@@ -234,6 +234,7 @@ class GHPageServer:
         server_cls = _ThreadedTCPServer if self._threaded else socketserver.TCPServer
 
         self._httpd = server_cls(("", self._port), handler)
+        self._port = self._httpd.server_address[1]
         url = f"http://localhost:{self._port}{self._base_path}"
         print(f"Serving at {url}")
         print(f"Directory: {self._directory}")
