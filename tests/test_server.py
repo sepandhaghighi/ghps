@@ -134,6 +134,7 @@ def test_keyboard_interrupt(capsys):
 @patch("ghps.server._ThreadedTCPServer")
 def test_auto_open_enabled(mock_server_cls, mock_web_open, tmp_path):
     mock_server = mock_server_cls.return_value
+    mock_server.server_address = ("127.0.0.1", 8000)
     mock_server.serve_forever.side_effect = KeyboardInterrupt
 
     server = GHPageServer(
@@ -151,6 +152,7 @@ def test_auto_open_enabled(mock_server_cls, mock_web_open, tmp_path):
 @patch("ghps.server._ThreadedTCPServer")
 def test_auto_open_disabled(mock_server_cls, mock_web_open, tmp_path):
     mock_server = mock_server_cls.return_value
+    mock_server.server_address = ("127.0.0.1", 8000)
     mock_server.serve_forever.side_effect = KeyboardInterrupt
 
     server = GHPageServer(

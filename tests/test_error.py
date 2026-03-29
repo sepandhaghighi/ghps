@@ -145,6 +145,7 @@ def test_invalid_auto_open_type(tmp_path):
 @patch("builtins.print")
 def test_auto_open_failure_logs_error(mock_print, mock_server_cls, mock_web_open, tmp_path):
     mock_server = mock_server_cls.return_value
+    mock_server.server_address = ("127.0.0.1", 8000)
     mock_server.serve_forever.side_effect = KeyboardInterrupt
     server = GHPageServer(
         directory=tmp_path,
