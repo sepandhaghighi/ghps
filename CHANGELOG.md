@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - `auto_open` parameter
 - `--auto-open` CLI argument
+- Random port support
 ### Changed
 - Test system modified
 - `README.md` updated

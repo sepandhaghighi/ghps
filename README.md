@@ -81,6 +81,8 @@ ghps --port=8080 --no-cache --no-threaded
 | `--no-threaded` | Disable threaded server | Threaded enabled |
 | `--auto-open` | Automatically open the server URL | Disable |
 
+ℹ️ You can set `--port=0` to let the OS automatically select an available port
+
 
 ### Library
 
@@ -111,6 +113,8 @@ server.start()
 | `no_cache` | `bool` | Disable cache headers | `False` |
 | `threaded` | `bool` | Enable threaded request handling | `True` |
 | `auto_open` | `bool` | Automatically open the server URL | `False` |
+
+ℹ️ You can set `port=0` to let the OS automatically select an available port
 
 ## Issues & Bug Reports			
 
