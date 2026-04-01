@@ -75,7 +75,7 @@ def main() -> None:
             print(GHPS_VERSION)
         else:
             server = GHPageServer(
-                directory=str(directory),
+                directory=args.directory,
                 port=args.port,
                 base_path=args.base_path,
                 strict=not args.no_strict,
