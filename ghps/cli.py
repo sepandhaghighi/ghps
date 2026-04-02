@@ -69,24 +69,24 @@ def _parse_args() -> argparse.Namespace:
 
 def main() -> None:
     """CLI main function."""
-    args = _parse_args()
-
-    if args.version:
-        print(GHPS_VERSION)
-    else:
-        directory = Path(args.directory).resolve()
-
-        if not directory.exists():
-            print("Error: Directory does not exist.")
-            sys.exit(1)
-
-        server = GHPageServer(
-            directory=str(directory),
-            port=args.port,
-            base_path=args.base_path,
-            strict=not args.no_strict,
-            no_cache=args.no_cache,
-            threaded=not args.no_threaded,
-            auto_open=args.auto_open,
-        )
-        server.start()
+    try:
+        args = _parse_args()
+        if args.version:
+            print(GHPS_VERSION)
+        else:
+            server = GHPageServer(
+                directory=args.directory,
+                port=args.port,
+                base_path=args.base_path,
+                strict=not args.no_strict,
+                no_cache=args.no_cache,
+                threaded=not args.no_threaded,
+                auto_open=args.auto_open,
+            )
+            server.start()
+    except ValueError as e:
+        print(f"[GHPS ERROR] {e}", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"[GHPS ERROR] Unexpected error: {e}", file=sys.stderr)
+        sys.exit(1)

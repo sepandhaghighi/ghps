@@ -155,6 +155,6 @@ def test_auto_open_failure_logs_error(mock_print, mock_server_cls, mock_web_open
     server.start()
     mock_web_open.assert_called_once_with("http://localhost:8000")
     assert any(
-        "[Error] Failed to open browser automatically" in str(call)
+        "[GHPS ERROR]: Failed to open browser automatically" in str(call)
         for call in mock_print.call_args_list
     )

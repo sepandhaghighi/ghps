@@ -110,3 +110,17 @@ def test_cli_invalid_directory(monkeypatch):
 
     with pytest.raises(SystemExit):
         ghps.cli.main()
+
+
+@patch("ghps.cli.GHPageServer")
+@patch("sys.stderr")
+def test_cli_unexpected_error(mock_stderr, mock_server_cls):
+    mock_server = mock_server_cls.return_value
+    mock_server.start.side_effect = Exception("boom")
+    test_args = ["ghps"]
+    with patch("sys.argv", test_args):
+        with pytest.raises(SystemExit) as exc:
+            ghps.cli.main()
+    assert exc.value.code == 1
+    written = "".join(call.args[0] for call in mock_stderr.write.call_args_list)
+    assert "[GHPS ERROR] Unexpected error: boom" in written
