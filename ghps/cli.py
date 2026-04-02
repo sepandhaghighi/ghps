@@ -95,8 +95,6 @@ def main() -> None:
             )
             server.start()
     except ValueError as e:
-        print(f"[GHPS ERROR] {e}", file=sys.stderr)
-        sys.exit(1)
+        _print_cli_error(str(e))
     except Exception as e:
-        print(f"[GHPS ERROR] Unexpected error: {e}", file=sys.stderr)
-        sys.exit(1)
+        _print_cli_error(f"Unexpected error: {e}")
