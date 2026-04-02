@@ -7,6 +7,16 @@ from pathlib import Path
 from .params import GHPS_VERSION
 from .server import GHPageServer
 
+def _print_cli_error(message: str, exit_code: int = 1) -> None:
+    """
+    Print a formatted CLI error message and exit.
+
+    :param message: Error message to display.
+    :param exit_code: Exit status code (default: 1).
+    """
+    print(f"[GHPS ERROR] {message}", file=sys.stderr)
+    sys.exit(exit_code)
+
 
 def _parse_args() -> argparse.Namespace:
     """Parse arguments."""
