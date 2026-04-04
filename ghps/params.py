@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ghps params."""
 
-GHPS_VERSION = "0.2"
+GHPS_VERSION = "0.3"
 
 INVALID_DIRECTORY_TYPE_ERROR = "`directory` must be str or pathlib.Path."
 DIRECTORY_NOT_FOUND_ERROR = "`directory` does not exist."

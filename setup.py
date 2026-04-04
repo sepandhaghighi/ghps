@@ -32,7 +32,7 @@ def read_description() -> str:
 setup(
     name='ghps',
     packages=['ghps'],
-    version='0.2',
+    version='0.3',
     description='Ghps: A Minimal GitHub Pages Simulator for Local Development',
     long_description=read_description(),
     long_description_content_type='text/markdown',
@@ -40,7 +40,7 @@ setup(
     author='Sepand Haghighi',
     author_email='me@sepand.tech',
     url='https://github.com/sepandhaghighi/ghps',
-    download_url='https://github.com/sepandhaghighi/ghps/tarball/v0.2',
+    download_url='https://github.com/sepandhaghighi/ghps/tarball/v0.3',
     keywords="github gh-pages static-server static-hosting development server local http simulator testing cli python",
     project_urls={
         'Source': 'https://github.com/sepandhaghighi/ghps'
