@@ -85,6 +85,7 @@ body:
       label: Ghps version
       description: Which version of Ghps are you using?
       options:
+        - Ghps 0.3
         - Ghps 0.2
         - Ghps 0.1
       default: 0
