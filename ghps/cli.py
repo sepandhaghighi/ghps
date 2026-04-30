@@ -8,6 +8,7 @@ from .params import GHPS_VERSION
 from .errors import GHPSError
 from .server import GHPageServer
 
+
 def _print_cli_error(message: str, exit_code: int = 1) -> None:
     """
     Print a formatted CLI error message and exit.
