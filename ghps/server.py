@@ -20,6 +20,7 @@ from .params import (
     INVALID_THREADED_TYPE_ERROR,
     INVALID_AUTO_OPEN_TYPE_ERROR
 )
+from .errors import GHPSValidationError
 
 
 def _validate_inputs(
@@ -43,38 +44,38 @@ def _validate_inputs(
     :param auto_open: If True, automatically opens the server URL in the default web browser.
     """
     if not isinstance(directory, (str, Path)):
-        raise ValueError(INVALID_DIRECTORY_TYPE_ERROR)
+        raise GHPSValidationError(INVALID_DIRECTORY_TYPE_ERROR)
 
     directory = Path(directory)
     if not directory.exists():
-        raise ValueError(DIRECTORY_NOT_FOUND_ERROR)
+        raise GHPSValidationError(DIRECTORY_NOT_FOUND_ERROR)
 
     if not directory.is_dir():
-        raise ValueError(DIRECTORY_NOT_DIR_ERROR)
+        raise GHPSValidationError(DIRECTORY_NOT_DIR_ERROR)
 
     if not isinstance(port, int):
-        raise ValueError(INVALID_PORT_TYPE_ERROR)
+        raise GHPSValidationError(INVALID_PORT_TYPE_ERROR)
 
     if not (0 <= port <= 65535):
-        raise ValueError(INVALID_PORT_RANGE_ERROR)
+        raise GHPSValidationError(INVALID_PORT_RANGE_ERROR)
 
     if not isinstance(base_path, str):
-        raise ValueError(INVALID_BASE_PATH_TYPE_ERROR)
+        raise GHPSValidationError(INVALID_BASE_PATH_TYPE_ERROR)
 
     if base_path and not base_path.startswith("/"):
-        raise ValueError(INVALID_BASE_PATH_FORMAT_ERROR)
+        raise GHPSValidationError(INVALID_BASE_PATH_FORMAT_ERROR)
 
     if not isinstance(strict, bool):
-        raise ValueError(INVALID_STRICT_TYPE_ERROR)
+        raise GHPSValidationError(INVALID_STRICT_TYPE_ERROR)
 
     if not isinstance(no_cache, bool):
-        raise ValueError(INVALID_NO_CACHE_TYPE_ERROR)
+        raise GHPSValidationError(INVALID_NO_CACHE_TYPE_ERROR)
 
     if not isinstance(threaded, bool):
-        raise ValueError(INVALID_THREADED_TYPE_ERROR)
+        raise GHPSValidationError(INVALID_THREADED_TYPE_ERROR)
 
     if not isinstance(auto_open, bool):
-        raise ValueError(INVALID_AUTO_OPEN_TYPE_ERROR)
+        raise GHPSValidationError(INVALID_AUTO_OPEN_TYPE_ERROR)
 
 
 class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):

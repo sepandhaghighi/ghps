@@ -5,7 +5,9 @@ import sys
 import argparse
 from pathlib import Path
 from .params import GHPS_VERSION
+from .errors import GHPSError
 from .server import GHPageServer
+
 
 def _print_cli_error(message: str, exit_code: int = 1) -> None:
     """
@@ -94,7 +96,7 @@ def main() -> None:
                 auto_open=args.auto_open,
             )
             server.start()
-    except ValueError as e:
+    except GHPSError as e:
         _print_cli_error(str(e))
     except Exception as e:
         _print_cli_error(f"Unexpected error: {e}")
