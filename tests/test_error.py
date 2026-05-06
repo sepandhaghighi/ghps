@@ -2,7 +2,7 @@
 import errno
 import pytest
 from unittest.mock import patch
-from ghps import GHPageServer, GHPSValidationError. GHPSRuntimeError
+from ghps import GHPageServer, GHPSValidationError, GHPSRuntimeError
 
 
 def test_invalid_directory_type():
