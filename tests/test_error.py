@@ -170,7 +170,7 @@ def test_port_in_use_error(mock_server_cls, tmp_path):
     with pytest.raises(GHPSRuntimeError) as exc:
         server.start()
 
-    assert "`port` is already in use" in str(exc.value)
+    assert "`port` is already in use. Try another port or use 0." in str(exc.value)
 
 
 @patch("ghps.server._ThreadedTCPServer")
@@ -182,7 +182,7 @@ def test_port_access_denied_error(mock_server_cls, tmp_path):
     with pytest.raises(GHPSRuntimeError) as exc:
         server.start()
 
-    assert "`port` access denied" in str(exc.value)
+    assert "`port` access denied. Try a different port or check permissions." in str(exc.value)
 
 
 @patch("ghps.server._ThreadedTCPServer")
@@ -195,3 +195,15 @@ def test_port_generic_error(mock_server_cls, tmp_path):
         server.start()
 
     assert "Failed to start server on port" in str(exc.value)
+
+
+@patch("ghps.server._ThreadedTCPServer")
+def test_port_address_not_available_error(mock_server_cls, tmp_path):
+    mock_server_cls.side_effect = OSError(errno.EADDRNOTAVAIL, "not-available")
+
+    server = GHPageServer(directory=tmp_path, port=80)
+
+    with pytest.raises(GHPSRuntimeError) as exc:
+        server.start()
+
+    assert "`port` address is not available. Check network configuration." in str(exc.value)
