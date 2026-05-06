@@ -88,7 +88,7 @@ def _validate_inputs(
 def _handle_bind_error(port: int, e: OSError) -> None:
     """
     Handle socket binding errors and raise a user-friendly runtime exception.
-    
+
     :param port: Port number that the server attempted to bind to.
     :param e: Original OSError raised during binding.
     """
@@ -265,7 +265,10 @@ class GHPageServer:
 
         server_cls = _ThreadedTCPServer if self._threaded else socketserver.TCPServer
 
-        self._httpd = server_cls(("", self._port), handler)
+        try:
+            self._httpd = server_cls(("", self._port), handler)
+        except OSError as e:
+            _handle_bind_error(self._port, e)
         self._port = self._httpd.server_address[1]
         url = f"http://localhost:{self._port}{self._base_path}"
         print(f"Serving at {url}")
