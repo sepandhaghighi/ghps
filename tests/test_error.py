@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+import errno
 import pytest
 from unittest.mock import patch
-from ghps import GHPageServer, GHPSValidationError
+from ghps import GHPageServer, GHPSValidationError, GHPSRuntimeError
 
 
 def test_invalid_directory_type():
@@ -158,3 +159,51 @@ def test_auto_open_failure_logs_error(mock_print, mock_server_cls, mock_web_open
         "[GHPS ERROR]: Failed to open browser automatically" in str(call)
         for call in mock_print.call_args_list
     )
+
+
+@patch("ghps.server._ThreadedTCPServer")
+def test_port_in_use_error(mock_server_cls, tmp_path):
+    mock_server_cls.side_effect = OSError(errno.EADDRINUSE, "in use")
+
+    server = GHPageServer(directory=tmp_path, port=8000)
+
+    with pytest.raises(GHPSRuntimeError) as exc:
+        server.start()
+
+    assert "`port` is already in use. Try another port or use 0." in str(exc.value)
+
+
+@patch("ghps.server._ThreadedTCPServer")
+def test_port_access_denied_error(mock_server_cls, tmp_path):
+    mock_server_cls.side_effect = OSError(errno.EACCES, "denied")
+
+    server = GHPageServer(directory=tmp_path, port=80)
+
+    with pytest.raises(GHPSRuntimeError) as exc:
+        server.start()
+
+    assert "`port` access denied. Try a different port or check permissions." in str(exc.value)
+
+
+@patch("ghps.server._ThreadedTCPServer")
+def test_port_generic_error(mock_server_cls, tmp_path):
+    mock_server_cls.side_effect = OSError(9999, "boom")
+
+    server = GHPageServer(directory=tmp_path, port=8000)
+
+    with pytest.raises(GHPSRuntimeError) as exc:
+        server.start()
+
+    assert "Failed to start server on port" in str(exc.value)
+
+
+@patch("ghps.server._ThreadedTCPServer")
+def test_port_address_not_available_error(mock_server_cls, tmp_path):
+    mock_server_cls.side_effect = OSError(errno.EADDRNOTAVAIL, "not-available")
+
+    server = GHPageServer(directory=tmp_path, port=80)
+
+    with pytest.raises(GHPSRuntimeError) as exc:
+        server.start()
+
+    assert "`port` address is not available. Check network configuration." in str(exc.value)

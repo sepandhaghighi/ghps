@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `GHPSError` class
 - `GHPSValidationError` class
 - `GHPSRuntimeError` class
+- Port error messages
 ### Changed
 - Test system modified
 ## [0.3] - 2026-04-05

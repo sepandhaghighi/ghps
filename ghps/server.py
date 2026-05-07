@@ -4,6 +4,7 @@
 import http.server
 import socketserver
 import webbrowser
+import errno
 from typing import Optional, Any
 from pathlib import Path
 from urllib.parse import unquote
@@ -20,7 +21,13 @@ from .params import (
     INVALID_THREADED_TYPE_ERROR,
     INVALID_AUTO_OPEN_TYPE_ERROR
 )
-from .errors import GHPSValidationError
+from .params import (
+    PORT_IN_USE_ERROR,
+    PORT_ACCESS_DENIED_ERROR,
+    PORT_ADDRESS_NOT_AVAILABLE_ERROR,
+    PORT_BIND_GENERIC_ERROR,
+)
+from .errors import GHPSValidationError, GHPSRuntimeError
 
 
 def _validate_inputs(
@@ -76,6 +83,30 @@ def _validate_inputs(
 
     if not isinstance(auto_open, bool):
         raise GHPSValidationError(INVALID_AUTO_OPEN_TYPE_ERROR)
+
+
+def _handle_bind_error(port: int, e: OSError) -> None:
+    """
+    Handle socket binding errors and raise a user-friendly runtime exception.
+
+    :param port: Port number that the server attempted to bind to.
+    :param e: Original OSError raised during binding.
+    """
+    err = getattr(e, "errno", None)
+
+    if err == errno.EADDRINUSE:
+        raise GHPSRuntimeError(PORT_IN_USE_ERROR) from e
+
+    elif err in (errno.EACCES, errno.EPERM):
+        raise GHPSRuntimeError(PORT_ACCESS_DENIED_ERROR) from e
+
+    elif err == errno.EADDRNOTAVAIL:
+        raise GHPSRuntimeError(PORT_ADDRESS_NOT_AVAILABLE_ERROR) from e
+
+    else:
+        raise GHPSRuntimeError(
+            PORT_BIND_GENERIC_ERROR.format(port=port, error=e)
+        ) from e
 
 
 class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -234,7 +265,10 @@ class GHPageServer:
 
         server_cls = _ThreadedTCPServer if self._threaded else socketserver.TCPServer
 
-        self._httpd = server_cls(("", self._port), handler)
+        try:
+            self._httpd = server_cls(("", self._port), handler)
+        except OSError as e:
+            _handle_bind_error(self._port, e)
         self._port = self._httpd.server_address[1]
         url = f"http://localhost:{self._port}{self._base_path}"
         print(f"Serving at {url}")
