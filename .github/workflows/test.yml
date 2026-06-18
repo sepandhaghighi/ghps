@@ -39,10 +39,9 @@ jobs:
       - name: First test
         run: |
           ghps --version
-      - name: Test requirements installation
+      - name: Dev requirements installation
         run: |
-          python otherfiles/requirements-splitter.py
-          pip install --upgrade --upgrade-strategy=only-if-needed -r test-requirements.txt
+          pip install --upgrade --upgrade-strategy=only-if-needed -r requirements-dev.txt
       - name: Test with pytest
         run: |
           python -m pytest . --cov=ghps --cov-report=term

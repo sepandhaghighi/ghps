@@ -1,17 +1,6 @@
 # -*- coding: utf-8 -*-
 """Setup module."""
-from typing import List
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-
-
-def get_requires() -> List[str]:
-    """Read requirements.txt."""
-    requirements = open("requirements.txt", "r").read()
-    return list(filter(lambda x: x != "", requirements.split()))
-
+from setuptools import setup
 
 def read_description() -> str:
     """Read README.md and CHANGELOG.md."""
@@ -41,11 +30,11 @@ setup(
     author_email='me@sepand.tech',
     url='https://github.com/sepandhaghighi/ghps',
     download_url='https://github.com/sepandhaghighi/ghps/tarball/v0.4',
-    keywords="github gh-pages static-server static-hosting development server local http simulator testing cli python",
+    keywords='github gh-pages static-server static-hosting development server local http simulator testing cli python',
     project_urls={
         'Source': 'https://github.com/sepandhaghighi/ghps'
     },
-    install_requires=get_requires(),
+    install_requires=['art>=5.3'],
     python_requires='>=3.7',
     classifiers=[
         'Development Status :: 3 - Alpha',
