@@ -36,7 +36,7 @@ def _parse_args() -> argparse.Namespace:
         "-p", "--port",
         type=int,
         default=8000,
-        help="Port to serve on (default: 8000)"
+        help="Port to serve on (default: 8000, use 0 for automatic allocation)"
     )
 
     parser.add_argument(
