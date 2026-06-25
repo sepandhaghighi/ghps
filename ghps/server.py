@@ -5,6 +5,7 @@ import http.server
 import socketserver
 import webbrowser
 import errno
+from functools import partial
 from typing import Optional, Any
 from pathlib import Path
 from urllib.parse import unquote
@@ -254,13 +255,12 @@ class GHPageServer:
 
         Prints server configuration details and blocks until interrupted.
         """
-        handler = lambda *args, **kwargs: _GHRequestHandler(
-            *args,
+        handler = partial(
+            _GHRequestHandler,
             directory=self._directory,
             base_path=self._base_path,
             strict=self._strict,
-            no_cache=self._no_cache,
-            **kwargs,
+            no_cache=self._no_cache
         )
 
         server_cls = _ThreadedTCPServer if self._threaded else socketserver.TCPServer
