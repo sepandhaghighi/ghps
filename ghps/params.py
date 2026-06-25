@@ -8,7 +8,7 @@ DIRECTORY_NOT_FOUND_ERROR = "`directory` does not exist."
 DIRECTORY_NOT_DIR_ERROR = "`directory` must be a valid directory."
 
 INVALID_PORT_TYPE_ERROR = "`port` must be int."
-INVALID_PORT_RANGE_ERROR = "`port` must be between 1 and 65535."
+INVALID_PORT_RANGE_ERROR = "`port` must be between 0 and 65535."
 
 INVALID_BASE_PATH_TYPE_ERROR = "`base_path` must be str."
 INVALID_BASE_PATH_FORMAT_ERROR = "`base_path` must start with '/' or be empty."
