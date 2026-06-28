@@ -8,7 +8,7 @@ DIRECTORY_NOT_FOUND_ERROR = "`directory` does not exist."
 DIRECTORY_NOT_DIR_ERROR = "`directory` must be a valid directory."
 
 INVALID_PORT_TYPE_ERROR = "`port` must be int."
-INVALID_PORT_RANGE_ERROR = "`port` must be between 1 and 65535."
+INVALID_PORT_RANGE_ERROR = "`port` must be between 0 and 65535."
 
 INVALID_BASE_PATH_TYPE_ERROR = "`base_path` must be str."
 INVALID_BASE_PATH_FORMAT_ERROR = "`base_path` must start with '/' or be empty."
@@ -18,7 +18,7 @@ INVALID_NO_CACHE_TYPE_ERROR = "`no_cache` must be bool."
 INVALID_THREADED_TYPE_ERROR = "`threaded` must be bool."
 INVALID_AUTO_OPEN_TYPE_ERROR = "`auto_open` must be bool."
 
-PORT_IN_USE_ERROR = "`port` is already in use. Try another port or use 0."
+PORT_IN_USE_ERROR = "`port` is already in use. Try another port or use `0` for automatic allocation."
 PORT_ACCESS_DENIED_ERROR = "`port` access denied. Try a different port or check permissions."
 PORT_ADDRESS_NOT_AVAILABLE_ERROR = "`port` address is not available. Check network configuration."
 PORT_BIND_GENERIC_ERROR = "Failed to start server on port `{port}`: {error}"

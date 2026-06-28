@@ -57,7 +57,7 @@ def test_invalid_port_type(tmp_path):
 
 
 def test_invalid_port_range(tmp_path):
-    with pytest.raises(GHPSValidationError, match="`port` must be between 1 and 65535."):
+    with pytest.raises(GHPSValidationError, match="`port` must be between 0 and 65535."):
         GHPageServer(
             directory=tmp_path,
             port=70000,
@@ -170,7 +170,7 @@ def test_port_in_use_error(mock_server_cls, tmp_path):
     with pytest.raises(GHPSRuntimeError) as exc:
         server.start()
 
-    assert "`port` is already in use. Try another port or use 0." in str(exc.value)
+    assert "`port` is already in use. Try another port or use `0` for automatic allocation." in str(exc.value)
 
 
 @patch("ghps.server._ThreadedTCPServer")
