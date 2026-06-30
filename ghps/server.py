@@ -181,7 +181,7 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
             not_found = Path(self.directory) / "404.html"
             if not_found.exists():
                 self.send_response(404)
-                self.send_header("Content-Type", "text/html")
+                self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.end_headers()
                 with open(not_found, "rb") as f:
                     self.wfile.write(f.read())
