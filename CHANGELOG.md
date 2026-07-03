@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Changed
+- 404 page headers modified
 - `GHPageServer` class `start` method modified
 - Error messages updated
 - Dependencies structure modified
