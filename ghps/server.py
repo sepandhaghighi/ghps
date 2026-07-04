@@ -243,12 +243,24 @@ class GHPageServer:
         )
         self._directory = str(Path(directory).resolve())
         self._port = port
+        self._url = None
         self._base_path = base_path
         self._strict = strict
         self._no_cache = no_cache
         self._threaded = threaded
         self._auto_open = auto_open
         self._httpd = None
+    
+    def _print_server_info(self, url: str):
+        """
+        Print the current server configuration and access URL.
+
+        :param url: Server URL to display.
+        """
+        print(f"Serving at {url}")
+        print(f"Directory: {self._directory}")
+        print(f"Strict mode: {'ON' if self._strict else 'OFF'}")
+        print(f"Cache disabled: {'YES' if self._no_cache else 'NO'}")
 
     def start(self) -> None:
         """
