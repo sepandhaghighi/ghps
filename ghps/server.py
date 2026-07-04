@@ -284,7 +284,7 @@ class GHPageServer:
 
         if self._auto_open:
             try:
-                webbrowser.open(url)
+                webbrowser.open(self._url)
             except Exception:
                 print("[GHPS ERROR]: Failed to open browser automatically")
         try:
