@@ -250,7 +250,7 @@ class GHPageServer:
         self._threaded = threaded
         self._auto_open = auto_open
         self._httpd = None
-    
+
     def _print_server_info(self):
         """Print the current server configuration and access URL."""
         print(f"Serving at {self._url}")
