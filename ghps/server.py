@@ -243,12 +243,20 @@ class GHPageServer:
         )
         self._directory = str(Path(directory).resolve())
         self._port = port
+        self._url = None
         self._base_path = base_path
         self._strict = strict
         self._no_cache = no_cache
         self._threaded = threaded
         self._auto_open = auto_open
         self._httpd = None
+
+    def _print_server_info(self) -> None:
+        """Print the current server configuration and access URL."""
+        print(f"Serving at {self._url}")
+        print(f"Directory: {self._directory}")
+        print(f"Strict mode: {'ON' if self._strict else 'OFF'}")
+        print(f"Cache disabled: {'YES' if self._no_cache else 'NO'}")
 
     def start(self) -> None:
         """
@@ -271,15 +279,12 @@ class GHPageServer:
         except OSError as e:
             _handle_bind_error(self._port, e)
         self._port = self._httpd.server_address[1]
-        url = f"http://localhost:{self._port}{self._base_path}"
-        print(f"Serving at {url}")
-        print(f"Directory: {self._directory}")
-        print(f"Strict mode: {'ON' if self._strict else 'OFF'}")
-        print(f"Cache disabled: {'YES' if self._no_cache else 'NO'}")
+        self._url = f"http://localhost:{self._port}{self._base_path}"
+        self._print_server_info()
 
         if self._auto_open:
             try:
-                webbrowser.open(url)
+                webbrowser.open(self._url)
             except Exception:
                 print("[GHPS ERROR]: Failed to open browser automatically")
         try:
