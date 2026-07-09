@@ -251,7 +251,7 @@ class GHPageServer:
         self._auto_open = auto_open
         self._httpd = None
 
-    def _print_server_info(self):
+    def _print_server_info(self) -> None:
         """Print the current server configuration and access URL."""
         print(f"Serving at {self._url}")
         print(f"Directory: {self._directory}")
