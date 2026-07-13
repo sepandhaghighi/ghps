@@ -20,7 +20,8 @@ from .params import (
     INVALID_STRICT_TYPE_ERROR,
     INVALID_NO_CACHE_TYPE_ERROR,
     INVALID_THREADED_TYPE_ERROR,
-    INVALID_AUTO_OPEN_TYPE_ERROR
+    INVALID_AUTO_OPEN_TYPE_ERROR,
+    INVALID_DIRECTORY_LISTING_TYPE_ERROR
 )
 from .params import (
     PORT_IN_USE_ERROR,
@@ -39,6 +40,7 @@ def _validate_inputs(
     no_cache: Any,
     threaded: Any,
     auto_open: Any,
+    directory_listing: Any
 ):
     """
     Validate GHPageServer inputs.
@@ -50,6 +52,7 @@ def _validate_inputs(
     :param no_cache: If True, disables client-side caching.
     :param threaded: If True, handles requests using threads.
     :param auto_open: If True, automatically opens the server URL in the default web browser.
+    :param directory_listing: If True, enables directory listing.
     """
     if not isinstance(directory, (str, Path)):
         raise GHPSValidationError(INVALID_DIRECTORY_TYPE_ERROR)
@@ -84,6 +87,9 @@ def _validate_inputs(
 
     if not isinstance(auto_open, bool):
         raise GHPSValidationError(INVALID_AUTO_OPEN_TYPE_ERROR)
+    
+    if not isinstance(directory_listing, bool):
+        raise GHPSValidationError(INVALID_DIRECTORY_LISTING_TYPE_ERROR)
 
 
 def _handle_bind_error(port: int, e: OSError) -> None:
@@ -120,6 +126,7 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
         base_path: str = "",
         strict: bool = True,
         no_cache: bool = False,
+        directory_listing=False,
         **kwargs: dict,
     ):
         """
@@ -130,11 +137,13 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
         :param base_path: URL base path prefix to strip from incoming requests.
         :param strict: If False, allows resolving paths without extension to ".html".
         :param no_cache: If True, disables client-side caching via headers.
+        :param directory_listing: If True, enables directory listing.
         :param kwargs: Keyword arguments.
         """
         self._base_path = base_path.rstrip("/")
         self._strict = strict
         self._no_cache = no_cache
+        self._directory_listing = directory_listing
         super().__init__(*args, directory=directory, **kwargs)
 
     def translate_path(self, path: str) -> str:
@@ -156,7 +165,7 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         full_path = Path(self.directory) / path.lstrip("/")
 
-        if full_path.is_dir():
+        if full_path.is_dir() and not self._directory_listing:
             full_path = full_path / "index.html"
 
         if not self._strict and not full_path.exists() and full_path.suffix == "":
@@ -200,6 +209,20 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Pragma", "no-cache")
             self.send_header("Expires", "0")
         super().end_headers()
+    
+    def list_directory(self, path: str) -> None:
+        """
+        Generate a directory listing for the requested path.
+
+        Returns the default directory listing when enabled. Otherwise,
+        responds with a 403 Forbidden error.
+
+        :param path: Filesystem path of the requested directory.
+        """
+        if not self._directory_listing:
+            self.send_error(403)
+            return None
+        return super().list_directory(path)
 
 
 class _ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
@@ -220,6 +243,7 @@ class GHPageServer:
         no_cache: bool = False,
         threaded: bool = True,
         auto_open: bool = False,
+        directory_listing: bool = False
     ):
         """
         Initialize the server.
@@ -231,6 +255,7 @@ class GHPageServer:
         :param no_cache: If True, disables client-side caching.
         :param threaded: If True, handles requests using threads.
         :param auto_open: If True, automatically opens the server URL in the default web browser.
+        :param directory_listing: If True, enables directory listing.
         """
         _validate_inputs(
             directory=directory,
@@ -240,6 +265,7 @@ class GHPageServer:
             no_cache=no_cache,
             threaded=threaded,
             auto_open=auto_open,
+            directory_listing=directory_listing
         )
         self._directory = str(Path(directory).resolve())
         self._port = port
@@ -249,6 +275,7 @@ class GHPageServer:
         self._no_cache = no_cache
         self._threaded = threaded
         self._auto_open = auto_open
+        self._directory_listing = directory_listing
         self._httpd = None
 
     def _print_server_info(self) -> None:
@@ -269,7 +296,8 @@ class GHPageServer:
             directory=self._directory,
             base_path=self._base_path,
             strict=self._strict,
-            no_cache=self._no_cache
+            no_cache=self._no_cache,
+            directory_listing=self._directory_listing
         )
 
         server_cls = _ThreadedTCPServer if self._threaded else socketserver.TCPServer
