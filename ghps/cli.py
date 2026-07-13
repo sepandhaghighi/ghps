@@ -75,6 +75,12 @@ def _parse_args() -> argparse.Namespace:
         help="Automatically open the server URL"
     )
 
+    parser.add_argument(
+        "--directory-listing",
+        action="store_true",
+        help="Enable directory listing"
+    )
+
     args = parser.parse_args()
     return args
 
@@ -94,6 +100,7 @@ def main() -> None:
                 no_cache=args.no_cache,
                 threaded=not args.no_threaded,
                 auto_open=args.auto_open,
+                directory_listing=args.directory_listing,
             )
             server.start()
     except GHPSError as e:
