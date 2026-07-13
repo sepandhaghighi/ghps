@@ -80,6 +80,7 @@ ghps --port=8080 --no-cache --no-threaded
 | `--no-cache` | Disable HTTP caching headers | Cache enabled |
 | `--no-threaded` | Disable threaded server | Threaded enabled |
 | `--auto-open` | Automatically open the server URL | Disable |
+| `--directory-listing` | Enable directory listing | Disable |
 
 ℹ️ You can set `--port=0` to let the OS automatically select an available port
 
@@ -113,6 +114,7 @@ server.start()
 | `no_cache` | `bool` | Disable cache headers | `False` |
 | `threaded` | `bool` | Enable threaded request handling | `True` |
 | `auto_open` | `bool` | Automatically open the server URL | `False` |
+| `directory_listing` | `bool` | Enable directory listing | `False` |
 
 ℹ️ You can set `port=0` to let the OS automatically select an available port
 
