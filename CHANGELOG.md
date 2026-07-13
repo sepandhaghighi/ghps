@@ -5,12 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- `directory_listing` parameter
+- `--directory-listing` CLI argument
 ### Changed
 - 404 page headers modified
 - `GHPageServer` class `start` method modified
 - Error messages updated
 - Dependencies structure modified
 - Test system modified
+- `README.md` updated
 ## [0.4] - 2026-05-08
 ### Added
 - `GHPSError` class
