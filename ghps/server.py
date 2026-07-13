@@ -87,7 +87,7 @@ def _validate_inputs(
 
     if not isinstance(auto_open, bool):
         raise GHPSValidationError(INVALID_AUTO_OPEN_TYPE_ERROR)
-    
+
     if not isinstance(directory_listing, bool):
         raise GHPSValidationError(INVALID_DIRECTORY_LISTING_TYPE_ERROR)
 
@@ -209,7 +209,7 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Pragma", "no-cache")
             self.send_header("Expires", "0")
         super().end_headers()
-    
+
     def list_directory(self, path: str) -> None:
         """
         Generate a directory listing for the requested path.
