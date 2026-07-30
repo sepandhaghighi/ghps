@@ -14,6 +14,7 @@ def test_invalid_directory_type():
             strict=True,
             no_cache=False,
             threaded=True,
+            directory_listing=False,
         )
 
 
@@ -26,6 +27,7 @@ def test_directory_not_found():
             strict=True,
             no_cache=False,
             threaded=True,
+            directory_listing=False,
         )
 
 
@@ -41,6 +43,7 @@ def test_directory_not_directory(tmp_path):
             strict=True,
             no_cache=False,
             threaded=True,
+            directory_listing=False,
         )
 
 
@@ -53,6 +56,7 @@ def test_invalid_port_type(tmp_path):
             strict=True,
             no_cache=False,
             threaded=True,
+            directory_listing=False,
         )
 
 
@@ -65,6 +69,7 @@ def test_invalid_port_range(tmp_path):
             strict=True,
             no_cache=False,
             threaded=True,
+            directory_listing=False,
         )
 
 
@@ -77,6 +82,7 @@ def test_invalid_base_path_type(tmp_path):
             strict=True,
             no_cache=False,
             threaded=True,
+            directory_listing=False,
         )
 
 
@@ -89,6 +95,7 @@ def test_invalid_base_path_format(tmp_path):
             strict=True,
             no_cache=False,
             threaded=True,
+            directory_listing=False,
         )
 
 
@@ -101,6 +108,7 @@ def test_invalid_strict_type(tmp_path):
             strict="yes",
             no_cache=False,
             threaded=True,
+            directory_listing=False,
         )
 
 
@@ -113,6 +121,7 @@ def test_invalid_no_cache_type(tmp_path):
             strict=True,
             no_cache="false",
             threaded=True,
+            directory_listing=False,
         )
 
 
@@ -125,6 +134,7 @@ def test_invalid_threaded_type(tmp_path):
             strict=True,
             no_cache=False,
             threaded="true",
+            directory_listing=False,
         )
 
 
@@ -138,6 +148,24 @@ def test_invalid_auto_open_type(tmp_path):
             no_cache=False,
             threaded=True,
             auto_open="true",
+            directory_listing=False,
+        )
+
+
+def test_invalid_directory_listing_type(tmp_path):
+    with pytest.raises(
+        GHPSValidationError,
+        match="`directory_listing` must be bool."
+    ):
+        GHPageServer(
+            directory=tmp_path,
+            port=8000,
+            base_path="",
+            strict=True,
+            no_cache=False,
+            threaded=True,
+            auto_open=False,
+            directory_listing="true",
         )
 
 
