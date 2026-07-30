@@ -40,6 +40,7 @@ def test_cli_default_arguments(monkeypatch):
     assert captured["strict"] is True
     assert captured["no_cache"] is False
     assert captured["threaded"] is True
+    assert captured["directory_listing"] is False
 
 
 def test_cli_custom_port_and_directory(monkeypatch, tmp_path):
@@ -103,6 +104,7 @@ def test_cli_flags(monkeypatch):
     assert captured["strict"] is False
     assert captured["no_cache"] is True
     assert captured["threaded"] is False
+    assert captured["directory_listing"] is False
 
 
 def test_cli_invalid_directory(monkeypatch):
@@ -124,3 +126,23 @@ def test_cli_unexpected_error(mock_stderr, mock_server_cls):
     assert exc.value.code == 1
     written = "".join(call.args[0] for call in mock_stderr.write.call_args_list)
     assert "[GHPS ERROR] Unexpected error: boom" in written
+
+
+def test_cli_directory_listing(monkeypatch):
+    captured = {}
+
+    def fake_init(self, **kwargs):
+        captured.update(kwargs)
+
+    monkeypatch.setattr(ghps.cli, "GHPageServer", type(
+        "MockServer",
+        (),
+        {
+            "__init__": fake_init,
+            "start": lambda self: None,
+        },
+    ))
+
+    run_cli(monkeypatch, ["--directory-listing"])
+
+    assert captured["directory_listing"] is True

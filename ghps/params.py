@@ -17,6 +17,7 @@ INVALID_STRICT_TYPE_ERROR = "`strict` must be bool."
 INVALID_NO_CACHE_TYPE_ERROR = "`no_cache` must be bool."
 INVALID_THREADED_TYPE_ERROR = "`threaded` must be bool."
 INVALID_AUTO_OPEN_TYPE_ERROR = "`auto_open` must be bool."
+INVALID_DIRECTORY_LISTING_TYPE_ERROR = "`directory_listing` must be bool."
 
 PORT_IN_USE_ERROR = "`port` is already in use. Try another port or use `0` for automatic allocation."
 PORT_ACCESS_DENIED_ERROR = "`port` access denied. Try a different port or check permissions."

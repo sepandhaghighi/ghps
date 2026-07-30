@@ -177,3 +177,40 @@ def test_random_port_resolution(mock_server_cls, tmp_path):
     )
     server.start()
     assert server._port == 54321
+
+
+def test_directory_listing_enabled():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        Path(tmpdir, "file.txt").write_text("Hello")
+
+        server = GHPageServer(
+            directory=tmpdir,
+            port=9008,
+            directory_listing=True,
+        )
+        run_server(server)
+
+        response = requests.get("http://localhost:9008/", timeout=5)
+
+        assert response.status_code == 200
+        assert "file.txt" in response.text
+
+        server.stop()
+
+
+def test_directory_listing_disabled():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        Path(tmpdir, "file.txt").write_text("Hello")
+
+        server = GHPageServer(
+            directory=tmpdir,
+            port=9009,
+            directory_listing=False,
+        )
+        run_server(server)
+
+        response = requests.get("http://localhost:9009/", timeout=5)
+
+        assert response.status_code == 404
+
+        server.stop()
