@@ -210,20 +210,6 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Expires", "0")
         super().end_headers()
 
-    def list_directory(self, path: str) -> None:
-        """
-        Generate a directory listing for the requested path.
-
-        Returns the default directory listing when enabled. Otherwise,
-        responds with a 403 Forbidden error.
-
-        :param path: Filesystem path of the requested directory.
-        """
-        if not self._directory_listing:
-            self.send_error(403)
-            return None
-        return super().list_directory(path)
-
 
 class _ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     """Threaded TCP server that handles each request in a separate thread."""
