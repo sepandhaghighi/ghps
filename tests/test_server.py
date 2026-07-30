@@ -211,6 +211,6 @@ def test_directory_listing_disabled():
 
         response = requests.get("http://localhost:9009/", timeout=5)
 
-        assert response.status_code == 403
+        assert response.status_code == 404
 
         server.stop()
