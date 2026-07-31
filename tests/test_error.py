@@ -47,11 +47,24 @@ def test_directory_not_directory(tmp_path):
         )
 
 
-def test_invalid_port_type(tmp_path):
+def test_invalid_port_type1(tmp_path):
     with pytest.raises(GHPSValidationError, match="`port` must be int."):
         GHPageServer(
             directory=tmp_path,
             port="8000",
+            base_path="",
+            strict=True,
+            no_cache=False,
+            threaded=True,
+            directory_listing=False,
+        )
+
+
+def test_invalid_port_type2(tmp_path):
+    with pytest.raises(GHPSValidationError, match="`port` must be int."):
+        GHPageServer(
+            directory=tmp_path,
+            port=True,
             base_path="",
             strict=True,
             no_cache=False,
