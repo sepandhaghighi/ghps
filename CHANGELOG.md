@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `--directory-listing` CLI argument
 ### Changed
 - 404 page headers modified
+- Port validation bug fixed
 - `GHPageServer` class `start` method modified
 - Error messages updated
 - Dependencies structure modified
