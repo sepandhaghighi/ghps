@@ -64,7 +64,7 @@ def _validate_inputs(
     if not directory.is_dir():
         raise GHPSValidationError(DIRECTORY_NOT_DIR_ERROR)
 
-    if not isinstance(port, int):
+    if not isinstance(port, int) or isinstance(port, bool):
         raise GHPSValidationError(INVALID_PORT_TYPE_ERROR)
 
     if not (0 <= port <= 65535):
