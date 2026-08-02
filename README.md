@@ -50,13 +50,13 @@
 ## Installation		
 
 ### Source Code
-- Download [Version 0.4](https://github.com/sepandhaghighi/ghps/archive/v0.4.zip) or [Latest Source](https://github.com/sepandhaghighi/ghps/archive/dev.zip)
+- Download [Version 0.5](https://github.com/sepandhaghighi/ghps/archive/v0.5.zip) or [Latest Source](https://github.com/sepandhaghighi/ghps/archive/dev.zip)
 - `pip install .`				
 
 ### PyPI
 
 - Check [Python Packaging User Guide](https://packaging.python.org/installing/)     
-- `pip install ghps==0.4`						
+- `pip install ghps==0.5`						
 
 
 ## Usage
