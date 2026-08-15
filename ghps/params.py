@@ -78,10 +78,10 @@ DEFAULT_ERROR_PAGE = """<!DOCTYPE html>
     <main>
         <h1>{code}</h1>
         <p class="status">{message}</p>
-        <p>The requested resource could not be served by GHPS.</p>
+        <p>The requested resource could not be served by Ghps.</p>
 
         <footer>
-            GHPS/{version} &mdash; GitHub Pages Simulator
+            Ghps/{version} &mdash; A Minimal GitHub Pages Simulator for Local Development
         </footer>
     </main>
 </body>
