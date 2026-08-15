@@ -10,6 +10,7 @@ from typing import Optional, Any
 from pathlib import Path
 from urllib.parse import unquote
 from .params import (
+    GHPS_VERSION,
     INVALID_DIRECTORY_TYPE_ERROR,
     DIRECTORY_NOT_FOUND_ERROR,
     DIRECTORY_NOT_DIR_ERROR,
@@ -118,6 +119,9 @@ def _handle_bind_error(port: int, e: OSError) -> None:
 
 class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
     """Custom HTTP request handler for serving static files with optional base path stripping, strict routing, custom 404 page support, and cache control headers."""
+
+    server_version = f"Ghps/{GHPS_VERSION}"
+    sys_version = ""
 
     def __init__(
         self,
