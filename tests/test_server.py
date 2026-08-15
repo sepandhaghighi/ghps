@@ -36,6 +36,25 @@ def test_404_without_custom_page():
 
         response = requests.get("http://localhost:9002/missing", timeout=5)
         assert response.status_code == 404
+        assert "404" in response.text
+        assert "The requested resource could not be served by GHPS." in response.text
+        assert "GHPS/" in response.text
+
+        server.stop()
+
+
+def test_default_error_page_content():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        server = GHPageServer(directory=tmpdir, port=9010)
+        run_server(server)
+
+        response = requests.get("http://localhost:9010/missing", timeout=5)
+
+        assert response.status_code == 404
+        assert response.headers["Content-Type"].startswith("text/html")
+        assert "404" in response.text
+        assert "The requested resource could not be served by GHPS." in response.text
+        assert "GitHub Pages Simulator" in response.text
 
         server.stop()
 
