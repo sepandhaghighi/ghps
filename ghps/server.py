@@ -2,6 +2,7 @@
 """ghps server."""
 
 import http.server
+from http import HTTPStatus
 import socketserver
 import webbrowser
 import errno
@@ -202,7 +203,7 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
                     self.wfile.write(f.read())
                 return
         if message is None:
-            message = http.HTTPStatus(code).phrase
+            message = HTTPStatus(code).phrase
 
         html = DEFAULT_ERROR_PAGE.format(
             code=code,
