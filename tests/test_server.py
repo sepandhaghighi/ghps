@@ -6,6 +6,8 @@ from pathlib import Path
 import requests
 from unittest.mock import patch, MagicMock
 from ghps import GHPageServer
+from ghps.server import _GHRequestHandler
+from http import HTTPStatus
 
 
 def run_server(server):
@@ -71,6 +73,78 @@ def test_custom_404_page():
         assert "Custom Not Found" in response.text
 
         server.stop()
+
+
+def test_send_error_uses_default_message(tmp_path):
+    handler = _GHRequestHandler.__new__(_GHRequestHandler)
+
+    handler.directory = str(tmp_path)
+    handler.wfile = MagicMock()
+    handler._no_cache = False
+
+    handler.send_response = MagicMock()
+    handler.send_header = MagicMock()
+    handler.end_headers = MagicMock()
+
+    _GHRequestHandler.send_error(
+        handler,
+        404,
+        message=None,
+        explain="custom explanation",
+    )
+
+    html = handler.wfile.write.call_args[0][0].decode("utf-8")
+
+    assert HTTPStatus(404).phrase in html
+    assert "custom explanation" in html
+
+
+def test_send_error_uses_default_explain(tmp_path):
+    handler = _GHRequestHandler.__new__(_GHRequestHandler)
+
+    handler.directory = str(tmp_path)
+    handler.wfile = MagicMock()
+    handler._no_cache = False
+
+    handler.send_response = MagicMock()
+    handler.send_header = MagicMock()
+    handler.end_headers = MagicMock()
+
+    _GHRequestHandler.send_error(
+        handler,
+        404,
+        message="Custom message",
+        explain=None,
+    )
+
+    html = handler.wfile.write.call_args[0][0].decode("utf-8")
+
+    assert "Custom message" in html
+    assert HTTPStatus(404).description in html
+
+
+def test_send_error_uses_default_message_and_explain(tmp_path):
+    handler = _GHRequestHandler.__new__(_GHRequestHandler)
+
+    handler.directory = str(tmp_path)
+    handler.wfile = MagicMock()
+    handler._no_cache = False
+
+    handler.send_response = MagicMock()
+    handler.send_header = MagicMock()
+    handler.end_headers = MagicMock()
+
+    _GHRequestHandler.send_error(
+        handler,
+        404,
+        message=None,
+        explain=None,
+    )
+
+    html = handler.wfile.write.call_args[0][0].decode("utf-8")
+
+    assert HTTPStatus(404).phrase in html
+    assert HTTPStatus(404).description in html
 
 
 def test_non_strict_html_fallback():
