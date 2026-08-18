@@ -204,10 +204,13 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
                 return
         if message is None:
             message = HTTPStatus(code).phrase
+        if explain is None:
+            explain = HTTPStatus(code).description
 
         html = DEFAULT_ERROR_PAGE.format(
             code=code,
             message=message,
+            explain=explain,
             version=GHPS_VERSION,
         )
 
