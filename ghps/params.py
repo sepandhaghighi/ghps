@@ -2,6 +2,7 @@
 """ghps params."""
 
 GHPS_VERSION = "0.5"
+GHPS_REPO = "https://github.com/sepandhaghighi/ghps"
 
 INVALID_DIRECTORY_TYPE_ERROR = "`directory` must be str or pathlib.Path."
 DIRECTORY_NOT_FOUND_ERROR = "`directory` does not exist."
@@ -82,7 +83,7 @@ DEFAULT_ERROR_PAGE = """<!DOCTYPE html>
         <p>The requested resource could not be served by Ghps.</p>
 
         <footer>
-            Ghps/{version} &mdash; A Minimal GitHub Pages Simulator for Local Development
+            <a href="{repo}">Ghps/{version} &mdash; A Minimal GitHub Pages Simulator for Local Development</a>
         </footer>
     </main>
 </body>

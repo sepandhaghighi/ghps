@@ -12,6 +12,7 @@ from pathlib import Path
 from urllib.parse import unquote
 from .params import (
     GHPS_VERSION,
+    GHPS_REPO,
     DEFAULT_ERROR_PAGE,
     INVALID_DIRECTORY_TYPE_ERROR,
     DIRECTORY_NOT_FOUND_ERROR,
@@ -212,6 +213,7 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
             message=message,
             explain=explain,
             version=GHPS_VERSION,
+            repo=GHPS_REPO,
         )
 
         encoded = html.encode("utf-8")
