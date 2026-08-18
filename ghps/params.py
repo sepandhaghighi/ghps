@@ -78,6 +78,7 @@ DEFAULT_ERROR_PAGE = """<!DOCTYPE html>
     <main>
         <h1>{code}</h1>
         <p class="status">{message}</p>
+        <p>{explain}</p>
         <p>The requested resource could not be served by Ghps.</p>
 
         <footer>
