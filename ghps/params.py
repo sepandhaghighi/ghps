@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ghps params."""
 
-GHPS_VERSION = "0.5"
+GHPS_VERSION = "0.6"
 GHPS_REPO = "https://github.com/sepandhaghighi/ghps"
 
 INVALID_DIRECTORY_TYPE_ERROR = "`directory` must be str or pathlib.Path."
