@@ -2,6 +2,7 @@
 """ghps server."""
 
 import http.server
+from http import HTTPStatus
 import socketserver
 import webbrowser
 import errno
@@ -11,6 +12,8 @@ from pathlib import Path
 from urllib.parse import unquote
 from .params import (
     GHPS_VERSION,
+    GHPS_REPO,
+    DEFAULT_ERROR_PAGE,
     INVALID_DIRECTORY_TYPE_ERROR,
     DIRECTORY_NOT_FOUND_ERROR,
     DIRECTORY_NOT_DIR_ERROR,
@@ -200,7 +203,26 @@ class _GHRequestHandler(http.server.SimpleHTTPRequestHandler):
                 with open(not_found, "rb") as f:
                     self.wfile.write(f.read())
                 return
-        super().send_error(code, message, explain)
+        if message is None:
+            message = HTTPStatus(code).phrase
+        if explain is None:
+            explain = HTTPStatus(code).description
+
+        html = DEFAULT_ERROR_PAGE.format(
+            code=code,
+            message=message,
+            explain=explain,
+            version=GHPS_VERSION,
+            repo=GHPS_REPO,
+        )
+
+        encoded = html.encode("utf-8")
+
+        self.send_response(code)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(encoded)))
+        self.end_headers()
+        self.wfile.write(encoded)
 
     def end_headers(self) -> None:
         """
