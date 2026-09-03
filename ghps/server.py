@@ -255,6 +255,7 @@ class GHPageServer:
     def __init__(
         self,
         directory: str = ".",
+        host: str = "localhost",
         port: int = 8000,
         base_path: str = "",
         strict: bool = True,
@@ -267,6 +268,7 @@ class GHPageServer:
         Initialize the server.
 
         :param directory: Root directory to serve files from.
+        :param host: Host address to bind the server to.
         :param port: Port number to bind the server to.
         :param base_path: URL base path prefix for serving content.
         :param strict: If False, enables automatic ".html" resolution.
@@ -277,6 +279,7 @@ class GHPageServer:
         """
         _validate_inputs(
             directory=directory,
+            host=host,
             port=port,
             base_path=base_path,
             strict=strict,
@@ -286,6 +289,7 @@ class GHPageServer:
             directory_listing=directory_listing
         )
         self._directory = str(Path(directory).resolve())
+        self._host = host
         self._port = port
         self._url = None
         self._base_path = base_path
@@ -321,11 +325,11 @@ class GHPageServer:
         server_cls = _ThreadedTCPServer if self._threaded else socketserver.TCPServer
 
         try:
-            self._httpd = server_cls(("", self._port), handler)
+            self._httpd = server_cls((self._host, self._port), handler)
         except OSError as e:
             _handle_bind_error(self._port, e)
         self._port = self._httpd.server_address[1]
-        self._url = f"http://localhost:{self._port}{self._base_path}"
+        self._url = f"http://{self._host}:{self._port}{self._base_path}"
         self._print_server_info()
 
         if self._auto_open:
