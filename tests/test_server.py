@@ -259,6 +259,25 @@ def test_auto_open_disabled(mock_server_cls, mock_web_open, tmp_path):
     mock_web_open.assert_not_called()
 
 
+@patch("ghps.server.webbrowser.open")
+@patch("ghps.server._ThreadedTCPServer")
+def test_auto_open_custom_host(mock_server_cls, mock_web_open, tmp_path):
+    mock_server = mock_server_cls.return_value
+    mock_server.server_address = ("127.0.0.1", 8000)
+    mock_server.serve_forever.side_effect = KeyboardInterrupt
+
+    server = GHPageServer(
+        directory=tmp_path,
+        port=8000,
+        host="127.0.0.1",
+        auto_open=True,
+    )
+
+    server.start()
+
+    mock_web_open.assert_called_once_with("http://127.0.0.1:8000")
+
+
 @patch("ghps.server._ThreadedTCPServer")
 def test_random_port_resolution(mock_server_cls, tmp_path):
     mock_server = mock_server_cls.return_value
