@@ -70,7 +70,7 @@ def _validate_inputs(
 
     if not directory.is_dir():
         raise GHPSValidationError(DIRECTORY_NOT_DIR_ERROR)
-    
+
     if not isinstance(host, str):
         raise GHPSValidationError(INVALID_HOST_TYPE_ERROR)
 
