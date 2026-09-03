@@ -272,6 +272,26 @@ def test_random_port_resolution(mock_server_cls, tmp_path):
     assert server._port == 54321
 
 
+@patch("ghps.server._ThreadedTCPServer")
+def test_custom_host_binding(mock_server_cls, tmp_path):
+    mock_server = mock_server_cls.return_value
+    mock_server.server_address = ("127.0.0.1", 8000)
+    mock_server.serve_forever.side_effect = KeyboardInterrupt
+
+    server = GHPageServer(
+        directory=tmp_path,
+        port=8000,
+        host="127.0.0.1",
+    )
+
+    server.start()
+
+    mock_server_cls.assert_called_once()
+    address = mock_server_cls.call_args[0][0]
+
+    assert address == ("127.0.0.1", 8000)
+
+
 def test_directory_listing_enabled():
     with tempfile.TemporaryDirectory() as tmpdir:
         Path(tmpdir, "file.txt").write_text("Hello")

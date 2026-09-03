@@ -36,6 +36,7 @@ def test_cli_default_arguments(monkeypatch):
 
     run_cli(monkeypatch, [])
 
+    assert captured["host"] == "localhost"
     assert captured["port"] == 8000
     assert captured["strict"] is True
     assert captured["no_cache"] is False
@@ -62,6 +63,26 @@ def test_cli_custom_port_and_directory(monkeypatch, tmp_path):
 
     assert captured["port"] == 9090
     assert captured["directory"] == str(tmp_path.resolve())
+
+
+def test_cli_host(monkeypatch):
+    captured = {}
+
+    def fake_init(self, **kwargs):
+        captured.update(kwargs)
+
+    monkeypatch.setattr(ghps.cli, "GHPageServer", type(
+        "MockServer",
+        (),
+        {
+            "__init__": fake_init,
+            "start": lambda self: None,
+        },
+    ))
+
+    run_cli(monkeypatch, ["--host", "127.0.0.1"])
+
+    assert captured["host"] == "127.0.0.1"
 
 
 def test_cli_base_path(monkeypatch):
@@ -146,3 +167,22 @@ def test_cli_directory_listing(monkeypatch):
     run_cli(monkeypatch, ["--directory-listing"])
 
     assert captured["directory_listing"] is True
+
+
+@patch("ghps.server.webbrowser.open")
+@patch("ghps.server._ThreadedTCPServer")
+def test_auto_open_custom_host(mock_server_cls, mock_web_open, tmp_path):
+    mock_server = mock_server_cls.return_value
+    mock_server.server_address = ("127.0.0.1", 8000)
+    mock_server.serve_forever.side_effect = KeyboardInterrupt
+
+    server = GHPageServer(
+        directory=tmp_path,
+        port=8000,
+        host="127.0.0.1",
+        auto_open=True,
+    )
+
+    server.start()
+
+    mock_web_open.assert_called_once_with("http://127.0.0.1:8000")
