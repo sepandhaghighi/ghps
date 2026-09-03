@@ -17,6 +17,7 @@ from .params import (
     INVALID_DIRECTORY_TYPE_ERROR,
     DIRECTORY_NOT_FOUND_ERROR,
     DIRECTORY_NOT_DIR_ERROR,
+    INVALID_HOST_TYPE_ERROR,
     INVALID_PORT_TYPE_ERROR,
     INVALID_PORT_RANGE_ERROR,
     INVALID_BASE_PATH_TYPE_ERROR,
@@ -38,6 +39,7 @@ from .errors import GHPSValidationError, GHPSRuntimeError
 
 def _validate_inputs(
     directory: Any,
+    host: Any,
     port: Any,
     base_path: Any,
     strict: Any,
@@ -50,6 +52,7 @@ def _validate_inputs(
     Validate GHPageServer inputs.
 
     :param directory: Root directory to serve files from.
+    :param host: Host address to bind the server to.
     :param port: Port number to bind the server to.
     :param base_path: URL base path prefix for serving content.
     :param strict: If False, enables automatic ".html" resolution.
@@ -67,6 +70,9 @@ def _validate_inputs(
 
     if not directory.is_dir():
         raise GHPSValidationError(DIRECTORY_NOT_DIR_ERROR)
+    
+    if not isinstance(host, str):
+        raise GHPSValidationError(INVALID_HOST_TYPE_ERROR)
 
     if not isinstance(port, int) or isinstance(port, bool):
         raise GHPSValidationError(INVALID_PORT_TYPE_ERROR)
