@@ -36,6 +36,7 @@ def test_cli_default_arguments(monkeypatch):
 
     run_cli(monkeypatch, [])
 
+    assert captured["host"] == "localhost"
     assert captured["port"] == 8000
     assert captured["strict"] is True
     assert captured["no_cache"] is False
@@ -62,6 +63,26 @@ def test_cli_custom_port_and_directory(monkeypatch, tmp_path):
 
     assert captured["port"] == 9090
     assert captured["directory"] == str(tmp_path.resolve())
+
+
+def test_cli_host(monkeypatch):
+    captured = {}
+
+    def fake_init(self, **kwargs):
+        captured.update(kwargs)
+
+    monkeypatch.setattr(ghps.cli, "GHPageServer", type(
+        "MockServer",
+        (),
+        {
+            "__init__": fake_init,
+            "start": lambda self: None,
+        },
+    ))
+
+    run_cli(monkeypatch, ["--host", "127.0.0.1"])
+
+    assert captured["host"] == "127.0.0.1"
 
 
 def test_cli_base_path(monkeypatch):

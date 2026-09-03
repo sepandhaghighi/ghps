@@ -66,13 +66,14 @@ Ghps can be used both as a CLI tool and as a Python library.
 ### CLI
 
 ```bash
-ghps --port=8080 --no-cache --no-threaded
+ghps --host=127.0.0.1 --port=8080 --no-cache --no-threaded
 ```
 
 #### Options
 
 | Option | Description | Default |
 |--------|-------------|----------|
+| `--host` | Host address to bind to | `localhost` |
 | `-p, --port` | Port to serve on | `8000` |
 | `-d, --directory` | Directory to serve | Current directory (`.`) |
 | `-b, --base-path` | Base path for project pages (e.g. `/repo-name`) | `""` |
@@ -84,6 +85,8 @@ ghps --port=8080 --no-cache --no-threaded
 
 ℹ️ You can set `--port=0` to let the OS automatically select an available port
 
+ℹ️ You can use `--host=0.0.0.0` to bind Ghps to all available network interfaces, or specify a particular address such as `127.0.0.1`.
+
 
 ### Library
 
@@ -92,6 +95,7 @@ from ghps import GHPageServer
 
 server = GHPageServer(
     directory="dist",
+	host="localhost",
     port=5000,
     base_path="/repo-name",
     strict=True,
@@ -108,6 +112,7 @@ server.start()
 | Parameter | Type | Description | Default |
 |------------|------|-------------|----------|
 | `directory` | `str` | Directory to serve | `"."` |
+| `host` | `str` | Host address to bind the server to | `"localhost"` |
 | `port` | `int` | Port number | `8000` |
 | `base_path` | `str` | Base path for project page simulation | `""` |
 | `strict` | `bool` | Enforce GitHub-like routing behavior | `True` |
@@ -117,6 +122,8 @@ server.start()
 | `directory_listing` | `bool` | Enable directory listing | `False` |
 
 ℹ️ You can set `port=0` to let the OS automatically select an available port
+
+ℹ️ The `host` parameter controls the network interface used for server binding. The default is `"localhost"`.
 
 ## Issues & Bug Reports			
 
