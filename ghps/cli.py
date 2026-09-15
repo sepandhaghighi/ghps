@@ -34,6 +34,7 @@ def _parse_args() -> argparse.Namespace:
 
     parser.add_argument(
         "--host",
+        type=str,
         default="localhost",
         help="Host address to bind to (default: localhost)"
     )
