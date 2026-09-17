@@ -47,6 +47,20 @@ def test_directory_not_directory(tmp_path):
         )
 
 
+def test_invalid_host_type(tmp_path):
+    with pytest.raises(GHPSValidationError, match="`host` must be str."):
+        GHPageServer(
+            directory=tmp_path,
+            port=8000,
+            host=123,
+            base_path="",
+            strict=True,
+            no_cache=False,
+            threaded=True,
+            directory_listing=False,
+        )
+
+
 def test_invalid_port_type1(tmp_path):
     with pytest.raises(GHPSValidationError, match="`port` must be int."):
         GHPageServer(

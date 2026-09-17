@@ -8,6 +8,7 @@ INVALID_DIRECTORY_TYPE_ERROR = "`directory` must be str or pathlib.Path."
 DIRECTORY_NOT_FOUND_ERROR = "`directory` does not exist."
 DIRECTORY_NOT_DIR_ERROR = "`directory` must be a valid directory."
 
+INVALID_HOST_TYPE_ERROR = "`host` must be str."
 INVALID_PORT_TYPE_ERROR = "`port` must be int."
 INVALID_PORT_RANGE_ERROR = "`port` must be between 0 and 65535."
 

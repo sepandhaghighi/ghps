@@ -33,6 +33,13 @@ def _parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--host",
+        type=str,
+        default="localhost",
+        help="Host address to bind to (default: localhost)"
+    )
+
+    parser.add_argument(
         "-p", "--port",
         type=int,
         default=8000,
@@ -94,6 +101,7 @@ def main() -> None:
         else:
             server = GHPageServer(
                 directory=args.directory,
+                host=args.host,
                 port=args.port,
                 base_path=args.base_path,
                 strict=not args.no_strict,
