@@ -83,7 +83,7 @@ ghps --host=127.0.0.1 --port=8080 --no-cache --no-threaded
 | `--auto-open` | Automatically open the server URL | Disable |
 | `--directory-listing` | Enable directory listing | Disable |
 
-ℹ️ You can set `--port=0` to let the OS automatically select an available port
+ℹ️ You can set `--port=0` to let the OS automatically select an available port.
 
 ℹ️ You can use `--host=0.0.0.0` to bind Ghps to all available network interfaces, or specify a particular address such as `127.0.0.1`.
 
@@ -121,7 +121,7 @@ server.start()
 | `auto_open` | `bool` | Automatically open the server URL | `False` |
 | `directory_listing` | `bool` | Enable directory listing | `False` |
 
-ℹ️ You can set `port=0` to let the OS automatically select an available port
+ℹ️ You can set `port=0` to let the OS automatically select an available port.
 
 ℹ️ The `host` parameter controls the network interface used for server binding. The default is `"localhost"`.
 
