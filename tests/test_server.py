@@ -346,3 +346,36 @@ def test_directory_listing_disabled():
         assert response.status_code == 404
 
         server.stop()
+
+
+def test_quiet_mode(capsys, tmp_path):
+    server = GHPageServer(
+        directory=tmp_path,
+        port=9011,
+        quiet=True,
+    )
+
+    server._url = "http://localhost:9011"
+    server._print_server_info()
+
+    captured = capsys.readouterr()
+
+    assert captured.out == ""
+
+
+def test_quiet_mode_disabled(capsys, tmp_path):
+    server = GHPageServer(
+        directory=tmp_path,
+        port=9012,
+        quiet=False,
+    )
+
+    server._url = "http://localhost:9012"
+    server._print_server_info()
+
+    captured = capsys.readouterr()
+
+    assert "Serving at http://localhost:9012" in captured.out
+    assert f"Directory: {tmp_path.resolve()}" in captured.out
+    assert "Strict mode: ON" in captured.out
+    assert "Cache disabled: NO" in captured.out
