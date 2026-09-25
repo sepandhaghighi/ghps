@@ -26,7 +26,8 @@ from .params import (
     INVALID_NO_CACHE_TYPE_ERROR,
     INVALID_THREADED_TYPE_ERROR,
     INVALID_AUTO_OPEN_TYPE_ERROR,
-    INVALID_DIRECTORY_LISTING_TYPE_ERROR
+    INVALID_DIRECTORY_LISTING_TYPE_ERROR,
+    INVALID_QUIET_TYPE_ERROR
 )
 from .params import (
     PORT_IN_USE_ERROR,
@@ -46,7 +47,8 @@ def _validate_inputs(
     no_cache: Any,
     threaded: Any,
     auto_open: Any,
-    directory_listing: Any
+    directory_listing: Any,
+    quiet: Any
 ):
     """
     Validate GHPageServer inputs.
@@ -60,6 +62,7 @@ def _validate_inputs(
     :param threaded: If True, handles requests using threads.
     :param auto_open: If True, automatically opens the server URL in the default web browser.
     :param directory_listing: If True, enables directory listing.
+    :param quiet: If True, suppresses informational server output.
     """
     if not isinstance(directory, (str, Path)):
         raise GHPSValidationError(INVALID_DIRECTORY_TYPE_ERROR)
@@ -100,6 +103,9 @@ def _validate_inputs(
 
     if not isinstance(directory_listing, bool):
         raise GHPSValidationError(INVALID_DIRECTORY_LISTING_TYPE_ERROR)
+    
+    if not isinstance(quiet, bool):
+        raise GHPSValidationError(INVALID_QUIET_TYPE_ERROR)
 
 
 def _handle_bind_error(port: int, e: OSError) -> None:
