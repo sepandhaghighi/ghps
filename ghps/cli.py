@@ -88,6 +88,12 @@ def _parse_args() -> argparse.Namespace:
         help="Enable directory listing"
     )
 
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress informational server output"
+    )
+
     args = parser.parse_args()
     return args
 
@@ -109,6 +115,7 @@ def main() -> None:
                 threaded=not args.no_threaded,
                 auto_open=args.auto_open,
                 directory_listing=args.directory_listing,
+                quiet=args.quiet,
             )
             server.start()
     except GHPSError as e:
