@@ -103,7 +103,7 @@ def _validate_inputs(
 
     if not isinstance(directory_listing, bool):
         raise GHPSValidationError(INVALID_DIRECTORY_LISTING_TYPE_ERROR)
-    
+
     if not isinstance(quiet, bool):
         raise GHPSValidationError(INVALID_QUIET_TYPE_ERROR)
 
@@ -314,7 +314,7 @@ class GHPageServer:
         """Print the current server configuration and access URL."""
         if self._quiet:
             return
-        
+
         print(f"Serving at {self._url}")
         print(f"Directory: {self._directory}")
         print(f"Strict mode: {'ON' if self._strict else 'OFF'}")
