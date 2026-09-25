@@ -82,6 +82,7 @@ ghps --host=127.0.0.1 --port=8080 --no-cache --no-threaded
 | `--no-threaded` | Disable threaded server | Threaded enabled |
 | `--auto-open` | Automatically open the server URL | Disable |
 | `--directory-listing` | Enable directory listing | Disable |
+| `--quiet` | Suppress informational server output | Disable |
 
 > [!NOTE]
 > You can set `--port=0` to let the OS automatically select an available port.
@@ -104,6 +105,7 @@ server = GHPageServer(
     no_cache=False,
     threaded=True,
 	auto_open=True,
+	quiet=False,
 )
 
 server.start()
@@ -122,6 +124,7 @@ server.start()
 | `threaded` | `bool` | Enable threaded request handling | `True` |
 | `auto_open` | `bool` | Automatically open the server URL | `False` |
 | `directory_listing` | `bool` | Enable directory listing | `False` |
+| `quiet` | `bool` | Suppress informational server output | `False` |
 
 > [!NOTE]
 > You can set `port=0` to let the OS automatically select an available port.
