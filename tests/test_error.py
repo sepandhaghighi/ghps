@@ -196,6 +196,24 @@ def test_invalid_directory_listing_type(tmp_path):
         )
 
 
+def test_invalid_quiet_type(tmp_path):
+    with pytest.raises(
+        GHPSValidationError,
+        match="`quiet` must be bool."
+    ):
+        GHPageServer(
+            directory=tmp_path,
+            port=8000,
+            base_path="",
+            strict=True,
+            no_cache=False,
+            threaded=True,
+            auto_open=False,
+            directory_listing=False,
+            quiet="true",
+        )
+
+
 @patch("ghps.server.webbrowser.open", side_effect=Exception("boom"))
 @patch("ghps.server._ThreadedTCPServer")
 @patch("builtins.print")

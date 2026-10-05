@@ -42,6 +42,7 @@ def test_cli_default_arguments(monkeypatch):
     assert captured["no_cache"] is False
     assert captured["threaded"] is True
     assert captured["directory_listing"] is False
+    assert captured["quiet"] is False
 
 
 def test_cli_custom_port_and_directory(monkeypatch, tmp_path):
@@ -120,12 +121,13 @@ def test_cli_flags(monkeypatch):
         },
     ))
 
-    run_cli(monkeypatch, ["--no-strict", "--no-cache", "--no-threaded"])
+    run_cli(monkeypatch, ["--no-strict", "--no-cache", "--no-threaded", "--quiet"])
 
     assert captured["strict"] is False
     assert captured["no_cache"] is True
     assert captured["threaded"] is False
     assert captured["directory_listing"] is False
+    assert captured["quiet"] is True
 
 
 def test_cli_invalid_directory(monkeypatch):
@@ -167,3 +169,23 @@ def test_cli_directory_listing(monkeypatch):
     run_cli(monkeypatch, ["--directory-listing"])
 
     assert captured["directory_listing"] is True
+
+
+def test_cli_quiet(monkeypatch):
+    captured = {}
+
+    def fake_init(self, **kwargs):
+        captured.update(kwargs)
+
+    monkeypatch.setattr(ghps.cli, "GHPageServer", type(
+        "MockServer",
+        (),
+        {
+            "__init__": fake_init,
+            "start": lambda self: None,
+        },
+    ))
+
+    run_cli(monkeypatch, ["--quiet"])
+
+    assert captured["quiet"] is True
