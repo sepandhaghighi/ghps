@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `--quiet` CLI argument
 ### Changed
 - Test system modified
+- Build system modified
 - `README.md` updated
 ## [0.7] - 2026-09-22
 ### Added
