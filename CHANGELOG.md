@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - `quiet` parameter
 - `--quiet` CLI argument
+- `--config` CLI argument
+- `from_config` method
 ### Changed
 - Test system modified
 - Build system modified
