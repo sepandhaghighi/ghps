@@ -189,3 +189,27 @@ def test_cli_quiet(monkeypatch):
     run_cli(monkeypatch, ["--quiet"])
 
     assert captured["quiet"] is True
+
+
+def test_cli_config_flag(monkeypatch, tmp_path):
+    captured = {}
+
+    def fake_from_config(cls, **kwargs):
+        captured.update(kwargs)
+        mock_server = MagicMock()
+        mock_server.start = lambda: None
+        return mock_server
+
+    monkeypatch.setattr(ghps.cli, "GHPageServer", type(
+        "MockServerClass",
+        (),
+        {
+            "from_config": classmethod(fake_from_config),
+        },
+    ))
+
+    config_path = str(tmp_path / "myconfig.toml")
+    run_cli(monkeypatch, ["-c", config_path])
+
+    assert captured["config"] == config_path
+    assert captured["auto_discover"] is True

@@ -379,3 +379,39 @@ def test_quiet_mode_disabled(capsys, tmp_path):
     assert f"Directory: {tmp_path.resolve()}" in captured.out
     assert "Strict mode: ON" in captured.out
     assert "Cache disabled: NO" in captured.out
+
+
+def test_server_from_config_dict():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        config = {"port": 9015, "strict": False, "no_cache": True}
+        server = GHPageServer.from_config(config=config, directory=tmpdir)
+        assert server._port == 9015
+        assert server._strict is False
+        assert server._no_cache is True
+
+
+def test_server_from_config_file(tmp_path):
+    config_file = tmp_path / "custom.toml"
+    config_file.write_text('port = 9016\nhost = "127.0.0.1"\n')
+
+    server = GHPageServer.from_config(config=config_file, directory=tmp_path)
+    assert server._port == 9016
+    assert server._host == "127.0.0.1"
+
+
+def test_server_auto_discover_config(tmp_path):
+    config_file = tmp_path / ".ghps"
+    config_file.write_text('port = 9017\n')
+
+    server = GHPageServer.from_config(directory=tmp_path, auto_discover=True)
+    assert server._port == 9017
+
+
+def test_server_config_override(tmp_path):
+    config_file = tmp_path / ".ghps"
+    config_file.write_text('port = 9017\nstrict = false\n')
+
+    # Explicit parameter override should take precedence over config file
+    server = GHPageServer.from_config(directory=tmp_path, port=9018, auto_discover=True)
+    assert server._port == 9018
+    assert server._strict is False
