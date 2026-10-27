@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 """ghps server."""
-
+try:
+    import tomllib
+except ImportError:
+    import tomli as tomllib
 import http.server
 from http import HTTPStatus
 import socketserver
 import webbrowser
 import errno
 from functools import partial
-from typing import Optional, Any
+from typing import Optional, Any, Union
 from pathlib import Path
 from urllib.parse import unquote
 from .params import (
@@ -27,7 +30,10 @@ from .params import (
     INVALID_THREADED_TYPE_ERROR,
     INVALID_AUTO_OPEN_TYPE_ERROR,
     INVALID_DIRECTORY_LISTING_TYPE_ERROR,
-    INVALID_QUIET_TYPE_ERROR
+    INVALID_QUIET_TYPE_ERROR,
+    INVALID_CONFIG_TYPE_ERROR,
+    INVALID_CONFIG_FILE_ERROR,
+    INVALID_CONFIG_FORMAT_ERROR
 )
 from .params import (
     PORT_IN_USE_ERROR,
@@ -106,6 +112,41 @@ def _validate_inputs(
 
     if not isinstance(quiet, bool):
         raise GHPSValidationError(INVALID_QUIET_TYPE_ERROR)
+
+
+def _load_config(directory: Union[str, Path], config_source: Optional[Union[str, Path, dict]] = None, auto_discover: bool = False) -> dict:
+    if config_source is None:
+        if not auto_discover:
+            return {}
+        dir_path = Path(directory)
+        if dir_path.exists() and dir_path.is_dir():
+            candidate = dir_path / ".ghps"
+            if candidate.exists() and candidate.is_file():
+                config_path = candidate
+            else:
+                return {}
+        else:
+            return {}
+    elif isinstance(config_source, dict):
+        return config_source
+    elif isinstance(config_source, (str, Path)):
+        config_path = Path(config_source)
+    else:
+        raise GHPSValidationError(INVALID_CONFIG_TYPE_ERROR)
+
+    if not config_path.exists():
+        return {}
+
+    try:
+        with open(config_path, "rb") as f:
+            data = tomllib.load(f)
+            if not isinstance(data, dict):
+                raise GHPSValidationError(INVALID_CONFIG_FORMAT_ERROR)
+            return data
+    except Exception as e:
+        if isinstance(e, GHPSValidationError):
+            raise e
+        raise GHPSValidationError(INVALID_CONFIG_FILE_ERROR.format(error=e))
 
 
 def _handle_bind_error(port: int, e: OSError) -> None:
