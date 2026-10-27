@@ -114,7 +114,8 @@ def _validate_inputs(
         raise GHPSValidationError(INVALID_QUIET_TYPE_ERROR)
 
 
-def _load_config(directory: Union[str, Path], config_source: Optional[Union[str, Path, dict]] = None, auto_discover: bool = False) -> dict:
+def _load_config(directory: Union[str, Path], config_source: Optional[Union[str,
+                 Path, dict]] = None, auto_discover: bool = False) -> dict:
     """
     Load config.
 
@@ -409,7 +410,7 @@ class GHPageServer:
             self._httpd.shutdown()
             self._httpd.server_close()
             print("Server stopped.")
-    
+
     @classmethod
     def from_config(
         cls,
@@ -453,7 +454,8 @@ class GHPageServer:
         resolved_no_cache = no_cache if no_cache is not None else loaded_config.get("no_cache", False)
         resolved_threaded = threaded if threaded is not None else loaded_config.get("threaded", True)
         resolved_auto_open = auto_open if auto_open is not None else loaded_config.get("auto_open", False)
-        resolved_directory_listing = directory_listing if directory_listing is not None else loaded_config.get("directory_listing", False)
+        resolved_directory_listing = directory_listing if directory_listing is not None else loaded_config.get(
+            "directory_listing", False)
         resolved_quiet = quiet if quiet is not None else loaded_config.get("quiet", False)
 
         return cls(
