@@ -115,6 +115,13 @@ def _validate_inputs(
 
 
 def _load_config(directory: Union[str, Path], config_source: Optional[Union[str, Path, dict]] = None, auto_discover: bool = False) -> dict:
+    """
+    Load config.
+
+    :param directory: Root directory.
+    :param config_source: Config source.
+    :param auto_discover: Auto discover flag.
+    """
     if config_source is None:
         if not auto_discover:
             return {}
@@ -421,6 +428,19 @@ class GHPageServer:
     ):
         """
         Create a GHPageServer instance from a configuration file or dictionary, with explicit parameter overrides.
+
+        :param config: Config input.
+        :param directory: Root directory to serve files from.
+        :param host: Host address to bind the server to.
+        :param port: Port number to bind the server to.
+        :param base_path: URL base path prefix for serving content.
+        :param strict: If False, enables automatic ".html" resolution.
+        :param no_cache: If True, disables client-side caching.
+        :param threaded: If True, handles requests using threads.
+        :param auto_open: If True, automatically opens the server URL in the default web browser.
+        :param directory_listing: If True, enables directory listing.
+        :param quiet: If True, suppresses informational server output.
+        :param auto_discover: Auto discover flag.
         """
         init_directory = directory if directory is not None else "."
         loaded_config = _load_config(init_directory, config, auto_discover=auto_discover)
