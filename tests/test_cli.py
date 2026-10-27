@@ -154,7 +154,7 @@ def test_cli_invalid_directory(monkeypatch):
 @patch("ghps.cli.GHPageServer")
 @patch("sys.stderr")
 def test_cli_unexpected_error(mock_stderr, mock_server_cls):
-    mock_server = mock_server_cls.return_value
+    mock_server = mock_server_cls.from_config.return_value
     mock_server.start.side_effect = Exception("boom")
     test_args = ["ghps"]
     with patch("sys.argv", test_args):
