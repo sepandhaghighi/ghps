@@ -402,3 +402,49 @@ class GHPageServer:
             self._httpd.shutdown()
             self._httpd.server_close()
             print("Server stopped.")
+    
+    @classmethod
+    def from_config(
+        cls,
+        config: Optional[Union[str, Path, dict]] = None,
+        directory: Optional[str] = None,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        base_path: Optional[str] = None,
+        strict: Optional[bool] = None,
+        no_cache: Optional[bool] = None,
+        threaded: Optional[bool] = None,
+        auto_open: Optional[bool] = None,
+        directory_listing: Optional[bool] = None,
+        quiet: Optional[bool] = None,
+        auto_discover: bool = False,
+    ):
+        """
+        Create a GHPageServer instance from a configuration file or dictionary, with explicit parameter overrides.
+        """
+        init_directory = directory if directory is not None else "."
+        loaded_config = _load_config(init_directory, config, auto_discover=auto_discover)
+
+        resolved_directory = directory if directory is not None else loaded_config.get("directory", ".")
+        resolved_host = host if host is not None else loaded_config.get("host", "localhost")
+        resolved_port = port if port is not None else loaded_config.get("port", 8000)
+        resolved_base_path = base_path if base_path is not None else loaded_config.get("base_path", "")
+        resolved_strict = strict if strict is not None else loaded_config.get("strict", True)
+        resolved_no_cache = no_cache if no_cache is not None else loaded_config.get("no_cache", False)
+        resolved_threaded = threaded if threaded is not None else loaded_config.get("threaded", True)
+        resolved_auto_open = auto_open if auto_open is not None else loaded_config.get("auto_open", False)
+        resolved_directory_listing = directory_listing if directory_listing is not None else loaded_config.get("directory_listing", False)
+        resolved_quiet = quiet if quiet is not None else loaded_config.get("quiet", False)
+
+        return cls(
+            directory=resolved_directory,
+            host=resolved_host,
+            port=resolved_port,
+            base_path=resolved_base_path,
+            strict=resolved_strict,
+            no_cache=resolved_no_cache,
+            threaded=resolved_threaded,
+            auto_open=resolved_auto_open,
+            directory_listing=resolved_directory_listing,
+            quiet=resolved_quiet,
+        )
