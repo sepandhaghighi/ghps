@@ -33,6 +33,13 @@ def _parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "-c", "--config",
+        type=str,
+        default=None,
+        help="Path to configuration file"
+    )
+
+    parser.add_argument(
         "--host",
         type=str,
         default="localhost",
@@ -105,17 +112,19 @@ def main() -> None:
         if args.version:
             print(GHPS_VERSION)
         else:
-            server = GHPageServer(
+            server = GHPageServer.from_config(
                 directory=args.directory,
                 host=args.host,
                 port=args.port,
                 base_path=args.base_path,
-                strict=not args.no_strict,
+                strict=args.strict,
                 no_cache=args.no_cache,
-                threaded=not args.no_threaded,
+                threaded=args.threaded,
                 auto_open=args.auto_open,
                 directory_listing=args.directory_listing,
                 quiet=args.quiet,
+                config=args.config,
+                auto_discover=True,
             )
             server.start()
     except GHPSError as e:
