@@ -293,3 +293,12 @@ def test_invalid_config_syntax(tmp_path):
 
     with pytest.raises(GHPSValidationError, match="Failed to load config file:"):
         GHPageServer.from_config(config=config_file, directory=tmp_path)
+
+
+def test_invalid_config_value(tmp_path):
+    config_file = tmp_path / "invalid.toml"
+    config_file.write_text("invalid = true\n")
+
+    with patch("ghps.server.tomli.load", return_value=[]):
+        with pytest.raises(GHPSValidationError, match="Config file content must be a valid TOML format."):
+            GHPageServer.from_config(config=config_file, directory=tmp_path)
