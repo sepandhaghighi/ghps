@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 import pytest
 from ghps.params import GHPS_VERSION
 import ghps.cli
@@ -8,7 +8,6 @@ import ghps.cli
 
 def run_cli(monkeypatch, args):
     monkeypatch.setattr(sys, "argv", ["ghps"] + args)
-    monkeypatch.setattr(ghps.cli.GHPageServer, "start", lambda self: None)
     ghps.cli.main()
 
 
@@ -22,14 +21,17 @@ def test_version_flag(capsys):
 def test_cli_default_arguments(monkeypatch):
     captured = {}
 
-    def fake_init(self, **kwargs):
+    def fake_from_config(cls, **kwargs):
         captured.update(kwargs)
+        mock_server = MagicMock()
+        mock_server.start = lambda: None
+        return mock_server
 
     monkeypatch.setattr(ghps.cli, "GHPageServer", type(
         "MockServer",
         (),
         {
-            "__init__": fake_init,
+            "from_config": classmethod(fake_from_config),
             "start": lambda self: None,
         },
     ))
@@ -48,14 +50,17 @@ def test_cli_default_arguments(monkeypatch):
 def test_cli_custom_port_and_directory(monkeypatch, tmp_path):
     captured = {}
 
-    def fake_init(self, **kwargs):
+    def fake_from_config(cls, **kwargs):
         captured.update(kwargs)
+        mock_server = MagicMock()
+        mock_server.start = lambda: None
+        return mock_server
 
     monkeypatch.setattr(ghps.cli, "GHPageServer", type(
         "MockServer",
         (),
         {
-            "__init__": fake_init,
+            "from_config": classmethod(fake_from_config),
             "start": lambda self: None,
         },
     ))
@@ -69,14 +74,17 @@ def test_cli_custom_port_and_directory(monkeypatch, tmp_path):
 def test_cli_host(monkeypatch):
     captured = {}
 
-    def fake_init(self, **kwargs):
+    def fake_from_config(cls, **kwargs):
         captured.update(kwargs)
+        mock_server = MagicMock()
+        mock_server.start = lambda: None
+        return mock_server
 
     monkeypatch.setattr(ghps.cli, "GHPageServer", type(
         "MockServer",
         (),
         {
-            "__init__": fake_init,
+            "from_config": classmethod(fake_from_config),
             "start": lambda self: None,
         },
     ))
@@ -89,14 +97,17 @@ def test_cli_host(monkeypatch):
 def test_cli_base_path(monkeypatch):
     captured = {}
 
-    def fake_init(self, **kwargs):
+    def fake_from_config(cls, **kwargs):
         captured.update(kwargs)
+        mock_server = MagicMock()
+        mock_server.start = lambda: None
+        return mock_server
 
     monkeypatch.setattr(ghps.cli, "GHPageServer", type(
         "MockServer",
         (),
         {
-            "__init__": fake_init,
+            "from_config": classmethod(fake_from_config),
             "start": lambda self: None,
         },
     ))
@@ -109,14 +120,17 @@ def test_cli_base_path(monkeypatch):
 def test_cli_flags(monkeypatch):
     captured = {}
 
-    def fake_init(self, **kwargs):
+    def fake_from_config(cls, **kwargs):
         captured.update(kwargs)
+        mock_server = MagicMock()
+        mock_server.start = lambda: None
+        return mock_server
 
     monkeypatch.setattr(ghps.cli, "GHPageServer", type(
         "MockServer",
         (),
         {
-            "__init__": fake_init,
+            "from_config": classmethod(fake_from_config),
             "start": lambda self: None,
         },
     ))
@@ -140,7 +154,7 @@ def test_cli_invalid_directory(monkeypatch):
 @patch("ghps.cli.GHPageServer")
 @patch("sys.stderr")
 def test_cli_unexpected_error(mock_stderr, mock_server_cls):
-    mock_server = mock_server_cls.return_value
+    mock_server = mock_server_cls.from_config.return_value
     mock_server.start.side_effect = Exception("boom")
     test_args = ["ghps"]
     with patch("sys.argv", test_args):
@@ -154,14 +168,17 @@ def test_cli_unexpected_error(mock_stderr, mock_server_cls):
 def test_cli_directory_listing(monkeypatch):
     captured = {}
 
-    def fake_init(self, **kwargs):
+    def fake_from_config(cls, **kwargs):
         captured.update(kwargs)
+        mock_server = MagicMock()
+        mock_server.start = lambda: None
+        return mock_server
 
     monkeypatch.setattr(ghps.cli, "GHPageServer", type(
         "MockServer",
         (),
         {
-            "__init__": fake_init,
+            "from_config": classmethod(fake_from_config),
             "start": lambda self: None,
         },
     ))
@@ -174,14 +191,17 @@ def test_cli_directory_listing(monkeypatch):
 def test_cli_quiet(monkeypatch):
     captured = {}
 
-    def fake_init(self, **kwargs):
+    def fake_from_config(cls, **kwargs):
         captured.update(kwargs)
+        mock_server = MagicMock()
+        mock_server.start = lambda: None
+        return mock_server
 
     monkeypatch.setattr(ghps.cli, "GHPageServer", type(
         "MockServer",
         (),
         {
-            "__init__": fake_init,
+            "from_config": classmethod(fake_from_config),
             "start": lambda self: None,
         },
     ))
@@ -189,3 +209,27 @@ def test_cli_quiet(monkeypatch):
     run_cli(monkeypatch, ["--quiet"])
 
     assert captured["quiet"] is True
+
+
+def test_cli_config_flag(monkeypatch, tmp_path):
+    captured = {}
+
+    def fake_from_config(cls, **kwargs):
+        captured.update(kwargs)
+        mock_server = MagicMock()
+        mock_server.start = lambda: None
+        return mock_server
+
+    monkeypatch.setattr(ghps.cli, "GHPageServer", type(
+        "MockServer",
+        (),
+        {
+            "from_config": classmethod(fake_from_config),
+        },
+    ))
+
+    config_path = str(tmp_path / "myconfig.toml")
+    run_cli(monkeypatch, ["-c", config_path])
+
+    assert captured["config"] == config_path
+    assert captured["auto_discover"] is True

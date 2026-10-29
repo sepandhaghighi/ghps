@@ -73,6 +73,7 @@ ghps --host=127.0.0.1 --port=8080 --no-cache --no-threaded
 
 | Option | Description | Default |
 |--------|-------------|----------|
+| `-c, --config` | Path to configuration file | Auto discovers `.ghps` |
 | `--host` | Host address to bind to | `localhost` |
 | `-p, --port` | Port to serve on | `8000` |
 | `-d, --directory` | Directory to serve | Current directory (`.`) |
@@ -89,6 +90,9 @@ ghps --host=127.0.0.1 --port=8080 --no-cache --no-threaded
 
 > [!NOTE]
 > You can use `--host=0.0.0.0` to bind Ghps to all available network interfaces, or specify a particular address such as `127.0.0.1`.
+
+> [!NOTE]
+> Ghps automatically looks for a `.ghps` configuration file in the served directory if available, or you can specify a custom configuration file path using `-c` / `--config`.
 
 
 ### Library
@@ -107,6 +111,10 @@ server = GHPageServer(
 	auto_open=True,
 	quiet=False,
 )
+
+server.start()
+
+server = GHPageServer.from_config(config="config.toml", auto_discover=True)
 
 server.start()
 ```
@@ -131,6 +139,23 @@ server.start()
 
 > [!NOTE]
 > The `host` parameter controls the network interface used for server binding. The default is `"localhost"`.
+
+### Configuration File
+
+You can define your server settings in a **TOML** configuration file (typically named `.ghps`):
+
+```toml
+directory = "dist"
+host = "localhost"
+port = 8080
+base_path = "/repo-name"
+strict = true
+no_cache = false
+threaded = true
+auto_open = false
+directory_listing = false
+quiet = false
+```
 
 ## Issues & Bug Reports			
 

@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 """ghps server."""
-
 import http.server
 from http import HTTPStatus
 import socketserver
 import webbrowser
 import errno
 from functools import partial
-from typing import Optional, Any
+from typing import Optional, Any, Union
 from pathlib import Path
 from urllib.parse import unquote
+import tomli
 from .params import (
     GHPS_VERSION,
     GHPS_REPO,
@@ -27,7 +27,10 @@ from .params import (
     INVALID_THREADED_TYPE_ERROR,
     INVALID_AUTO_OPEN_TYPE_ERROR,
     INVALID_DIRECTORY_LISTING_TYPE_ERROR,
-    INVALID_QUIET_TYPE_ERROR
+    INVALID_QUIET_TYPE_ERROR,
+    INVALID_CONFIG_TYPE_ERROR,
+    INVALID_CONFIG_FILE_ERROR,
+    INVALID_CONFIG_FORMAT_ERROR
 )
 from .params import (
     PORT_IN_USE_ERROR,
@@ -106,6 +109,49 @@ def _validate_inputs(
 
     if not isinstance(quiet, bool):
         raise GHPSValidationError(INVALID_QUIET_TYPE_ERROR)
+
+
+def _load_config(directory: Union[str, Path], config_source: Optional[Union[str,
+                 Path, dict]] = None, auto_discover: bool = False) -> dict:
+    """
+    Load config.
+
+    :param directory: Root directory.
+    :param config_source: Config source.
+    :param auto_discover: Auto discover flag.
+    """
+    if config_source is None:
+        if not auto_discover:
+            return {}
+        dir_path = Path(directory)
+        if dir_path.exists() and dir_path.is_dir():
+            candidate = dir_path / ".ghps"
+            if candidate.exists() and candidate.is_file():
+                config_path = candidate
+            else:
+                return {}
+        else:
+            return {}
+    elif isinstance(config_source, dict):
+        return config_source
+    elif isinstance(config_source, (str, Path)):
+        config_path = Path(config_source)
+    else:
+        raise GHPSValidationError(INVALID_CONFIG_TYPE_ERROR)
+
+    if not config_path.exists():
+        return {}
+
+    try:
+        with open(config_path, "rb") as f:
+            data = tomli.load(f)
+            if not isinstance(data, dict):
+                raise GHPSValidationError(INVALID_CONFIG_FORMAT_ERROR)
+            return data
+    except Exception as e:
+        if isinstance(e, GHPSValidationError):
+            raise e
+        raise GHPSValidationError(INVALID_CONFIG_FILE_ERROR.format(error=e))
 
 
 def _handle_bind_error(port: int, e: OSError) -> None:
@@ -361,3 +407,63 @@ class GHPageServer:
             self._httpd.shutdown()
             self._httpd.server_close()
             print("Server stopped.")
+
+    @classmethod
+    def from_config(
+        cls,
+        config: Optional[Union[str, Path, dict]] = None,
+        directory: Optional[str] = None,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        base_path: Optional[str] = None,
+        strict: Optional[bool] = None,
+        no_cache: Optional[bool] = None,
+        threaded: Optional[bool] = None,
+        auto_open: Optional[bool] = None,
+        directory_listing: Optional[bool] = None,
+        quiet: Optional[bool] = None,
+        auto_discover: bool = False,
+    ):
+        """
+        Create a GHPageServer instance from a configuration file or dictionary, with explicit parameter overrides.
+
+        :param config: Config input.
+        :param directory: Root directory to serve files from.
+        :param host: Host address to bind the server to.
+        :param port: Port number to bind the server to.
+        :param base_path: URL base path prefix for serving content.
+        :param strict: If False, enables automatic ".html" resolution.
+        :param no_cache: If True, disables client-side caching.
+        :param threaded: If True, handles requests using threads.
+        :param auto_open: If True, automatically opens the server URL in the default web browser.
+        :param directory_listing: If True, enables directory listing.
+        :param quiet: If True, suppresses informational server output.
+        :param auto_discover: Auto discover flag.
+        """
+        init_directory = directory if directory is not None else "."
+        loaded_config = _load_config(init_directory, config, auto_discover=auto_discover)
+
+        resolved_directory = directory if directory is not None else loaded_config.get("directory", ".")
+        resolved_host = host if host is not None else loaded_config.get("host", "localhost")
+        resolved_port = port if port is not None else loaded_config.get("port", 8000)
+        resolved_base_path = base_path if base_path is not None else loaded_config.get("base_path", "")
+        resolved_strict = strict if strict is not None else loaded_config.get("strict", True)
+        resolved_no_cache = no_cache if no_cache is not None else loaded_config.get("no_cache", False)
+        resolved_threaded = threaded if threaded is not None else loaded_config.get("threaded", True)
+        resolved_auto_open = auto_open if auto_open is not None else loaded_config.get("auto_open", False)
+        resolved_directory_listing = directory_listing if directory_listing is not None else loaded_config.get(
+            "directory_listing", False)
+        resolved_quiet = quiet if quiet is not None else loaded_config.get("quiet", False)
+
+        return cls(
+            directory=resolved_directory,
+            host=resolved_host,
+            port=resolved_port,
+            base_path=resolved_base_path,
+            strict=resolved_strict,
+            no_cache=resolved_no_cache,
+            threaded=resolved_threaded,
+            auto_open=resolved_auto_open,
+            directory_listing=resolved_directory_listing,
+            quiet=resolved_quiet,
+        )
