@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 """ghps server."""
-try:
-    import tomllib
-except ImportError:
-    import tomli as tomllib
 import http.server
 from http import HTTPStatus
 import socketserver
@@ -13,6 +9,7 @@ from functools import partial
 from typing import Optional, Any, Union
 from pathlib import Path
 from urllib.parse import unquote
+import tomli
 from .params import (
     GHPS_VERSION,
     GHPS_REPO,
@@ -147,7 +144,7 @@ def _load_config(directory: Union[str, Path], config_source: Optional[Union[str,
 
     try:
         with open(config_path, "rb") as f:
-            data = tomllib.load(f)
+            data = tomli.load(f)
             if not isinstance(data, dict):
                 raise GHPSValidationError(INVALID_CONFIG_FORMAT_ERROR)
             return data
