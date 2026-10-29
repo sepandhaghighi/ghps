@@ -381,7 +381,7 @@ def test_quiet_mode_disabled(capsys, tmp_path):
     assert "Cache disabled: NO" in captured.out
 
 
-def test_server_from_config_dict():
+def test_server_from_config1():
     with tempfile.TemporaryDirectory() as tmpdir:
         config = {"port": 9015, "strict": False, "no_cache": True}
         server = GHPageServer.from_config(config=config, directory=tmpdir)
@@ -390,7 +390,7 @@ def test_server_from_config_dict():
         assert server._no_cache is True
 
 
-def test_server_from_config_file(tmp_path):
+def test_server_from_config2(tmp_path):
     config_file = tmp_path / "custom.toml"
     config_file.write_text('port = 9016\nhost = "127.0.0.1"\n')
 
@@ -399,7 +399,28 @@ def test_server_from_config_file(tmp_path):
     assert server._host == "127.0.0.1"
 
 
-def test_server_auto_discover_config(tmp_path):
+def test_server_from_config3():
+    server1 = GHPageServer.from_config(auto_discover=False)
+    server2 = GHPageServer()
+    assert server1._port == server2._port
+    assert server1._host == server2._host
+
+
+def test_server_from_config4(tmp_path):
+    server1 = GHPageServer.from_config(auto_discover=True)
+    server2 = GHPageServer()
+    assert server1._port == server2._port
+    assert server1._host == server2._host
+
+
+def test_server_from_config5(tmp_path):
+    server1 = GHPageServer.from_config(config="custom2.toml")
+    server2 = GHPageServer()
+    assert server1._port == server2._port
+    assert server1._host == server2._host
+
+
+def test_server_from_config6(tmp_path):
     config_file = tmp_path / ".ghps"
     config_file.write_text('port = 9017\n')
 
@@ -407,11 +428,10 @@ def test_server_auto_discover_config(tmp_path):
     assert server._port == 9017
 
 
-def test_server_config_override(tmp_path):
+def test_server_from_config7(tmp_path):
     config_file = tmp_path / ".ghps"
     config_file.write_text('port = 9017\nstrict = false\n')
 
-    # Explicit parameter override should take precedence over config file
     server = GHPageServer.from_config(directory=tmp_path, port=9018, auto_discover=True)
     assert server._port == 9018
     assert server._strict is False
