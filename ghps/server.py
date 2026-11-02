@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """ghps server."""
+
 import http.server
 from http import HTTPStatus
 import socketserver
