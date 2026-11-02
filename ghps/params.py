@@ -22,6 +22,10 @@ INVALID_AUTO_OPEN_TYPE_ERROR = "`auto_open` must be bool."
 INVALID_DIRECTORY_LISTING_TYPE_ERROR = "`directory_listing` must be bool."
 INVALID_QUIET_TYPE_ERROR = "`quiet` must be bool."
 
+INVALID_CONFIG_TYPE_ERROR = "`config` must be str, pathlib.Path, or dict."
+INVALID_CONFIG_FILE_ERROR = "Failed to load config file: {error}"
+INVALID_CONFIG_FORMAT_ERROR = "Config file content must be a valid TOML format."
+
 PORT_IN_USE_ERROR = "`port` is already in use. Try another port or use `0` for automatic allocation."
 PORT_ACCESS_DENIED_ERROR = "`port` access denied. Try a different port or check permissions."
 PORT_ADDRESS_NOT_AVAILABLE_ERROR = "`port` address is not available. Check network configuration."

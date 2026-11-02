@@ -280,3 +280,25 @@ def test_port_address_not_available_error(mock_server_cls, tmp_path):
         server.start()
 
     assert "`port` address is not available. Check network configuration." in str(exc.value)
+
+
+def test_invalid_config_type(tmp_path):
+    with pytest.raises(GHPSValidationError, match="`config` must be str, pathlib.Path, or dict."):
+        GHPageServer.from_config(config=123, directory=tmp_path)
+
+
+def test_invalid_config_syntax(tmp_path):
+    config_file = tmp_path / ".ghps"
+    config_file.write_text('port = [invalid_syntax\n')
+
+    with pytest.raises(GHPSValidationError, match="Failed to load config file:"):
+        GHPageServer.from_config(config=config_file, directory=tmp_path)
+
+
+def test_invalid_config_value(tmp_path):
+    config_file = tmp_path / "invalid.toml"
+    config_file.write_text("invalid = true\n")
+
+    with patch("ghps.server.tomli.load", return_value=[]):
+        with pytest.raises(GHPSValidationError, match="Config file content must be a valid TOML format."):
+            GHPageServer.from_config(config=config_file, directory=tmp_path)
