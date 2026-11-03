@@ -406,14 +406,14 @@ def test_server_from_config3():
     assert server1._host == server2._host
 
 
-def test_server_from_config4(tmp_path):
+def test_server_from_config4():
     server1 = GHPageServer.from_config(auto_discover=True)
     server2 = GHPageServer()
     assert server1._port == server2._port
     assert server1._host == server2._host
 
 
-def test_server_from_config5(tmp_path):
+def test_server_from_config5():
     server1 = GHPageServer.from_config(config="custom2.toml")
     server2 = GHPageServer()
     assert server1._port == server2._port
