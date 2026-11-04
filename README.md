@@ -100,7 +100,7 @@ ghps --host=127.0.0.1 --port=8080 --no-cache --no-threaded
 ```python
 from ghps import GHPageServer
 
-server = GHPageServer(
+server1 = GHPageServer(
     directory="dist",
 	host="localhost",
     port=5000,
@@ -112,11 +112,11 @@ server = GHPageServer(
 	quiet=False,
 )
 
-server.start()
+server1.start()
 
-server = GHPageServer.from_config(config="config.toml", auto_discover=True)
+server2 = GHPageServer.from_config(config="config.toml")
 
-server.start()
+server2.start()
 ```
 
 #### Parameters
