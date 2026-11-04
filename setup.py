@@ -14,7 +14,7 @@ def read_description() -> str:
             description += c.read()
         return description
     except Exception:
-        return '''Ghps is a minimal, zero-dependency GitHub Pages simulator written in pure Python for local development and testing.
+        return '''Ghps is a minimal GitHub Pages simulator written in pure Python for local development and testing.
         It accurately replicates GitHub Pages' static hosting behavior, including proper 404.html handling, project base path simulation,
         strict routing mode, and optional cache control - all while remaining lightweight, fast, and usable both as a CLI tool and as an importable Python library.'''
 
