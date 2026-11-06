@@ -42,62 +42,68 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--host",
         type=str,
-        default="localhost",
+        default=None,
         help="Host address to bind to (default: localhost)"
     )
 
     parser.add_argument(
         "-p", "--port",
         type=int,
-        default=8000,
+        default=None,
         help="Port to serve on (default: 8000, use 0 for automatic allocation)"
     )
 
     parser.add_argument(
         "-d", "--directory",
-        default=".",
+        default=None,
         help="Directory to serve (default: current directory)"
     )
 
     parser.add_argument(
         "-b", "--base-path",
-        default="",
+        default=None,
         help="Base path for project pages (e.g. /repo-name)"
     )
 
     parser.add_argument(
         "--no-strict",
         action="store_true",
+        default=None,
         help="Enable .html fallback"
     )
 
     parser.add_argument(
         "--no-cache",
         action="store_true",
+        default=None,
         help="Disable HTTP caching headers"
     )
 
     parser.add_argument(
         "--no-threaded",
         action="store_true",
+        default=None,
         help="Disable threaded server"
     )
 
     parser.add_argument(
         "--auto-open",
         action="store_true",
+        default=None,
         help="Automatically open the server URL"
     )
 
     parser.add_argument(
         "--directory-listing",
         action="store_true",
+        default=None,
         help="Enable directory listing"
     )
 
     parser.add_argument(
         "--quiet",
         action="store_true",
+        default=None,
         help="Suppress informational server output"
     )
 
