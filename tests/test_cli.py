@@ -40,9 +40,9 @@ def test_cli_default_arguments(monkeypatch):
 
     assert captured["host"] is None
     assert captured["port"] is None
-    assert captured["strict"] is None
+    assert captured["strict"] is True
     assert captured["no_cache"] is None
-    assert captured["threaded"] is None
+    assert captured["threaded"] is True
     assert captured["directory_listing"] is None
     assert captured["quiet"] is None
 
