@@ -102,14 +102,14 @@ from ghps import GHPageServer
 
 server1 = GHPageServer(
     directory="dist",
-	host="localhost",
+    host="localhost",
     port=5000,
     base_path="/repo-name",
     strict=True,
     no_cache=False,
     threaded=True,
-	auto_open=True,
-	quiet=False,
+    auto_open=True,
+    quiet=False,
 )
 
 server1.start()

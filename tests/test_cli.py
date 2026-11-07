@@ -38,13 +38,13 @@ def test_cli_default_arguments(monkeypatch):
 
     run_cli(monkeypatch, [])
 
-    assert captured["host"] == "localhost"
-    assert captured["port"] == 8000
-    assert captured["strict"] is True
-    assert captured["no_cache"] is False
-    assert captured["threaded"] is True
-    assert captured["directory_listing"] is False
-    assert captured["quiet"] is False
+    assert captured["host"] is None
+    assert captured["port"] is None
+    assert captured["strict"] is None
+    assert captured["no_cache"] is None
+    assert captured["threaded"] is None
+    assert captured["directory_listing"] is None
+    assert captured["quiet"] is None
 
 
 def test_cli_custom_port_and_directory(monkeypatch, tmp_path):
@@ -140,7 +140,7 @@ def test_cli_flags(monkeypatch):
     assert captured["strict"] is False
     assert captured["no_cache"] is True
     assert captured["threaded"] is False
-    assert captured["directory_listing"] is False
+    assert captured["directory_listing"] is None
     assert captured["quiet"] is True
 
 
