@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [0.8] - 2026-11-08
 ### Added
 - `quiet` parameter
 - `--quiet` CLI argument
@@ -69,7 +70,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Command line interface
 - Test system
 
-[Unreleased]: https://github.com/sepandhaghighi/ghps/compare/v0.7...dev
+[Unreleased]: https://github.com/sepandhaghighi/ghps/compare/v0.8...dev
+[0.8]: https://github.com/sepandhaghighi/ghps/compare/v0.7...v0.8
 [0.7]: https://github.com/sepandhaghighi/ghps/compare/v0.6...v0.7
 [0.6]: https://github.com/sepandhaghighi/ghps/compare/v0.5...v0.6
 [0.5]: https://github.com/sepandhaghighi/ghps/compare/v0.4...v0.5
