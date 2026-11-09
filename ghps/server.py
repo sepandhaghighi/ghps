@@ -454,20 +454,19 @@ class GHPageServer:
         :param quiet: If True, suppresses informational server output.
         :param auto_discover: Auto discover flag.
         """
-        init_directory = directory if directory is not None else "."
+        init_directory = directory if directory is not None else DEFAULT_DIRECTORY
         loaded_config = _load_config(init_directory, config, auto_discover=auto_discover)
 
-        resolved_directory = directory if directory is not None else loaded_config.get("directory", ".")
-        resolved_host = host if host is not None else loaded_config.get("host", "localhost")
-        resolved_port = port if port is not None else loaded_config.get("port", 8000)
-        resolved_base_path = base_path if base_path is not None else loaded_config.get("base_path", "")
-        resolved_strict = strict if strict is not None else loaded_config.get("strict", True)
-        resolved_no_cache = no_cache if no_cache is not None else loaded_config.get("no_cache", False)
-        resolved_threaded = threaded if threaded is not None else loaded_config.get("threaded", True)
-        resolved_auto_open = auto_open if auto_open is not None else loaded_config.get("auto_open", False)
-        resolved_directory_listing = directory_listing if directory_listing is not None else loaded_config.get(
-            "directory_listing", False)
-        resolved_quiet = quiet if quiet is not None else loaded_config.get("quiet", False)
+        resolved_directory = directory if directory is not None else loaded_config.get("directory", DEFAULT_DIRECTORY)
+        resolved_host = host if host is not None else loaded_config.get("host", DEFAULT_HOST)
+        resolved_port = port if port is not None else loaded_config.get("port", DEFAULT_PORT)
+        resolved_base_path = base_path if base_path is not None else loaded_config.get("base_path", DEFAULT_BASE_PATH)
+        resolved_strict = strict if strict is not None else loaded_config.get("strict", DEFAULT_STRICT)
+        resolved_no_cache = no_cache if no_cache is not None else loaded_config.get("no_cache", DEFAULT_NO_CACHE)
+        resolved_threaded = threaded if threaded is not None else loaded_config.get("threaded", DEFAULT_THREADED)
+        resolved_auto_open = auto_open if auto_open is not None else loaded_config.get("auto_open", DEFAULT_AUTO_OPEN)
+        resolved_directory_listing = directory_listing if directory_listing is not None else loaded_config.get("directory_listing", DEFAULT_DIRECTORY_LISTING)
+        resolved_quiet = quiet if quiet is not None else loaded_config.get("quiet", DEFAULT_QUIET)
 
         return cls(
             directory=resolved_directory,
