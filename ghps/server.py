@@ -12,6 +12,19 @@ from pathlib import Path
 from urllib.parse import unquote
 import tomli
 from .params import (
+    DEFAULT_DIRECTORY,
+    DEFAULT_HOST,
+    DEFAULT_PORT,
+    DEFAULT_BASE_PATH,
+    DEFAULT_STRICT,
+    DEFAULT_NO_CACHE,
+    DEFAULT_THREADED,
+    DEFAULT_AUTO_OPEN,
+    DEFAULT_DIRECTORY_LISTING,
+    DEFAULT_QUIET,
+    DEFAULT_AUTO_DISCOVER,
+)
+from .params import (
     GHPS_VERSION,
     GHPS_REPO,
     DEFAULT_ERROR_PAGE,
@@ -307,16 +320,16 @@ class GHPageServer:
 
     def __init__(
         self,
-        directory: str = ".",
-        host: str = "localhost",
-        port: int = 8000,
-        base_path: str = "",
-        strict: bool = True,
-        no_cache: bool = False,
-        threaded: bool = True,
-        auto_open: bool = False,
-        directory_listing: bool = False,
-        quiet: bool = False
+        directory: str = DEFAULT_DIRECTORY,
+        host: str = DEFAULT_HOST,
+        port: int = DEFAULT_PORT,
+        base_path: str = DEFAULT_BASE_PATH,
+        strict: bool = DEFAULT_STRICT,
+        no_cache: bool = DEFAULT_NO_CACHE,
+        threaded: bool = DEFAULT_THREADED,
+        auto_open: bool = DEFAULT_AUTO_OPEN,
+        directory_listing: bool = DEFAULT_DIRECTORY_LISTING,
+        quiet: bool = DEFAULT_QUIET
     ):
         """
         Initialize the server.
