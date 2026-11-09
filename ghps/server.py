@@ -126,7 +126,7 @@ def _validate_inputs(
 
 
 def _load_config(directory: Union[str, Path], config_source: Optional[Union[str,
-                 Path, dict]] = None, auto_discover: bool = False) -> dict:
+                 Path, dict]] = None, auto_discover: bool = DEFAULT_AUTO_DISCOVER) -> dict:
     """
     Load config.
 
@@ -436,7 +436,7 @@ class GHPageServer:
         auto_open: Optional[bool] = None,
         directory_listing: Optional[bool] = None,
         quiet: Optional[bool] = None,
-        auto_discover: bool = False,
+        auto_discover: bool = DEFAULT_AUTO_DISCOVER,
     ):
         """
         Create a GHPageServer instance from a configuration file or dictionary, with explicit parameter overrides.
