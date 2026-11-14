@@ -4,6 +4,18 @@
 GHPS_VERSION = "0.8"
 GHPS_REPO = "https://github.com/sepandhaghighi/ghps"
 
+DEFAULT_DIRECTORY = "."
+DEFAULT_HOST = "localhost"
+DEFAULT_PORT = 8000
+DEFAULT_BASE_PATH = ""
+DEFAULT_STRICT = True
+DEFAULT_NO_CACHE = False
+DEFAULT_THREADED = True
+DEFAULT_AUTO_OPEN = False
+DEFAULT_DIRECTORY_LISTING = False
+DEFAULT_QUIET = False
+DEFAULT_AUTO_DISCOVER = False
+
 INVALID_DIRECTORY_TYPE_ERROR = "`directory` must be str or pathlib.Path."
 DIRECTORY_NOT_FOUND_ERROR = "`directory` does not exist."
 DIRECTORY_NOT_DIR_ERROR = "`directory` must be a valid directory."

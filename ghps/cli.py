@@ -5,6 +5,7 @@ import sys
 import argparse
 from pathlib import Path
 from .params import GHPS_VERSION
+from .params import DEFAULT_HOST, DEFAULT_PORT, DEFAULT_DIRECTORY
 from .errors import GHPSError
 from .server import GHPageServer
 
@@ -43,20 +44,20 @@ def _parse_args() -> argparse.Namespace:
         "--host",
         type=str,
         default=None,
-        help="Host address to bind to (default: localhost)"
+        help=f"Host address to bind to (default: {DEFAULT_HOST})"
     )
 
     parser.add_argument(
         "-p", "--port",
         type=int,
         default=None,
-        help="Port to serve on (default: 8000, use 0 for automatic allocation)"
+        help=f"Port to serve on (default: {DEFAULT_PORT}, use 0 for automatic allocation)"
     )
 
     parser.add_argument(
         "-d", "--directory",
         default=None,
-        help="Directory to serve (default: current directory)"
+        help=f"Directory to serve (default: {DEFAULT_DIRECTORY})"
     )
 
     parser.add_argument(
