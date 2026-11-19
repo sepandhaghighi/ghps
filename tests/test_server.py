@@ -6,7 +6,7 @@ from pathlib import Path
 import requests
 from unittest.mock import patch, MagicMock
 from ghps import GHPageServer
-from ghps.server import _GHRequestHandler
+from ghps.server import _GHRequestHandler, _ThreadedTCPServer
 from http import HTTPStatus
 
 
@@ -221,6 +221,10 @@ def test_keyboard_interrupt(capsys):
 
     captured = capsys.readouterr()
     assert "Server stopped." in captured.out
+
+
+def test_threaded_server_uses_daemon_threads():
+    assert _ThreadedTCPServer.daemon_threads is True
 
 
 @patch("ghps.server.webbrowser.open")

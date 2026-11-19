@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 - Default values moved to `params.py`
+- Server shutdown bug fixed
+- Test system modified
 ## [0.8] - 2026-11-08
 ### Added
 - `quiet` parameter
