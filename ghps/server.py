@@ -313,6 +313,7 @@ class _ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     """Threaded TCP server that handles each request in a separate thread."""
 
     allow_reuse_address = True
+    daemon_threads = True
 
 
 class GHPageServer:
