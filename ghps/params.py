@@ -4,6 +4,12 @@
 GHPS_VERSION = "0.8"
 GHPS_REPO = "https://github.com/sepandhaghighi/ghps"
 
+OVERVIEW = """Ghps is a minimal GitHub Pages simulator written in pure Python for local development and testing.
+It accurately replicates GitHub Pages' static hosting behavior, including proper 404.html handling, project base path simulation,
+strict routing mode, and optional cache control - all while remaining lightweight, fast, and usable both as a CLI tool
+and as an importable Python library.
+"""
+
 DEFAULT_DIRECTORY = "."
 DEFAULT_HOST = "localhost"
 DEFAULT_PORT = 8000
