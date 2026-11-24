@@ -4,10 +4,17 @@
 import sys
 import argparse
 from pathlib import Path
-from .params import GHPS_VERSION
+from .params import GHPS_VERSION, GHPS_REPO, OVERVIEW
 from .params import DEFAULT_HOST, DEFAULT_PORT, DEFAULT_DIRECTORY
 from .errors import GHPSError
 from .server import GHPageServer
+
+def _print_ghps_help() -> None:
+    """Print Ghps details."""
+    type_print(text2art("Ghps"), mode=TypeMode.LINE, delay=0.1)
+    type_print(text2art("V:" + GHPS_VERSION), mode=TypeMode.LINE, delay=0.1)
+    type_print(OVERVIEW, mode=TypeMode.CHAR, delay=0.05)
+    type_print(f"Repo : {GHPS_REPO}", mode=TypeMode.CHAR, delay=0.05)
 
 
 def _print_cli_error(message: str, exit_code: int = 1) -> None:
@@ -31,6 +38,12 @@ def _parse_args() -> argparse.Namespace:
         "--version",
         action="store_true",
         help="Version"
+    )
+
+    parser.add_argument(
+        "--info",
+        action="store_true",
+        help="Display Ghps info"
     )
 
     parser.add_argument(
@@ -118,6 +131,8 @@ def main() -> None:
         args = _parse_args()
         if args.version:
             print(GHPS_VERSION)
+        elif args.info:
+            _print_ghps_help()
         else:
             server = GHPageServer.from_config(
                 directory=args.directory,
