@@ -4,6 +4,8 @@
 import sys
 import argparse
 from pathlib import Path
+from art import text2art
+from typio import type_print, TypeMode
 from .params import GHPS_VERSION, GHPS_REPO, OVERVIEW
 from .params import DEFAULT_HOST, DEFAULT_PORT, DEFAULT_DIRECTORY
 from .errors import GHPSError
