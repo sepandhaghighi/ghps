@@ -2,7 +2,7 @@
 import sys
 from unittest.mock import patch, MagicMock
 import pytest
-from ghps.params import GHPS_VERSION
+from ghps.params import GHPS_VERSION, GHPS_REPO, OVERVIEW
 import ghps.cli
 
 
@@ -16,6 +16,14 @@ def test_version_flag(capsys):
         ghps.cli.main()
     out, _ = capsys.readouterr()
     assert out.strip() == GHPS_VERSION
+
+
+def test_info_flag(capsys):
+    with patch("sys.argv", ["ghps", "--info"]):
+        ghps.cli.main()
+    out, _ = capsys.readouterr()
+    assert GHPS_REPO in out.strip()
+    assert OVERVIEW in out.strip()
 
 
 def test_cli_default_arguments(monkeypatch):

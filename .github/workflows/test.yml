@@ -40,7 +40,9 @@ jobs:
         run: |
           python -c "from ghps import *"
           python -m ghps --version
+          python -m ghps --info
           ghps --version
+          ghps --info
       - name: Dev requirements installation
         run: |
           pip install --upgrade --upgrade-strategy=only-if-needed -r requirements-dev.txt
@@ -77,4 +79,6 @@ jobs:
           cd wheel_test
           python -c "from ghps import *"
           python -m ghps --version
+          python -m ghps --info
           ghps --version
+          ghps --info

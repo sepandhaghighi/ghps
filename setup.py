@@ -35,7 +35,7 @@ setup(
     project_urls={
         'Source': 'https://github.com/sepandhaghighi/ghps'
     },
-    install_requires=['art>=5.3', 'tomli>=2.0.2'],
+    install_requires=['art>=5.3', 'typio>=0.4', 'tomli>=2.0.2'],
     python_requires='>=3.7',
     classifiers=[
         'Development Status :: 4 - Beta',
