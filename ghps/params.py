@@ -49,6 +49,8 @@ PORT_ACCESS_DENIED_ERROR = "`port` access denied. Try a different port or check 
 PORT_ADDRESS_NOT_AVAILABLE_ERROR = "`port` address is not available. Check network configuration."
 PORT_BIND_GENERIC_ERROR = "Failed to start server on port `{port}`: {error}"
 
+EXIT_MESSAGE = "See you. Bye!"
+
 DEFAULT_ERROR_PAGE = """<!DOCTYPE html>
 <html lang="en">
 <head>

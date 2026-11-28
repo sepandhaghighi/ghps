@@ -26,6 +26,16 @@ def test_info_flag(capsys):
     assert OVERVIEW in out.strip()
 
 
+@pytest.mark.parametrize("exception", [KeyboardInterrupt, EOFError])
+def test_info_flag_interrupted(exception, monkeypatch, capsys):
+    monkeypatch.setattr(sys, "argv", ["ghps", "--info"])
+    monkeypatch.setattr(ghps.cli, "_print_ghps_help", MagicMock(side_effect=exception))
+    ghps.cli.main()
+    captured = capsys.readouterr()
+    assert "See you. Bye!" in captured.out
+    assert captured.err == ""
+
+
 def test_cli_default_arguments(monkeypatch):
     captured = {}
 

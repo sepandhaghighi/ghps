@@ -6,7 +6,7 @@ import argparse
 from pathlib import Path
 from art import text2art
 from typio import type_print, TypeMode
-from .params import GHPS_VERSION, GHPS_REPO, OVERVIEW
+from .params import GHPS_VERSION, GHPS_REPO, OVERVIEW, EXIT_MESSAGE
 from .params import DEFAULT_HOST, DEFAULT_PORT, DEFAULT_DIRECTORY
 from .errors import GHPSError
 from .server import GHPageServer
@@ -151,6 +151,8 @@ def main() -> None:
                 auto_discover=True,
             )
             server.start()
+    except (KeyboardInterrupt, EOFError):
+        print(EXIT_MESSAGE)
     except GHPSError as e:
         _print_cli_error(str(e))
     except Exception as e:
